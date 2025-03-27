@@ -101,73 +101,72 @@ function App() {
 
     <>
 
-    <div>
-      <h2>Students:</h2>
+      <div>
+        <h2>Students:</h2>
 
-      <ol>
-        {students.map(student => (
-          <a href={`/students/${student.id}`}>
-            <li key={student.id}>{student.name} {student.surname}, {student.age} y.</li>
-          </a>
-        ))}
-      </ol>
-    </div>
+        <ol>
+          {students.map(student => (
+            <a href={`/students/${student.id}`}>
+              <li key={student.id}>{student.name} {student.surname}, {student.age} y.</li>
+            </a>
+          ))}
+        </ol>
+      </div>
 
-    <div>
-      <h2>Groups:</h2>
+      <div>
+        <h2>Groups:</h2>
 
-      <ul>
-        {groups.map(group => (
-          <a href={`/groups/${group.id}`} key={group.id}>
-            <li><strong>{group.name}</strong> - {group.description}</li>
-          </a>
-        ))}
-      </ul>
-    </div>
+        <ul>
+          {groups.map(group => (
+            <a href={`/groups/${group.id}`} key={group.id}>
+              <li><strong>{group.name}</strong> - {group.description}</li>
+            </a>
+          ))}
+        </ul>
+      </div>
 
-    <div>
-      <h2>Programming Languages:</h2>
+      <div>
+        <h2>Programming Languages:</h2>
 
-      <ul>
-        {proglangs.map(proglang => (
-          <a href={`/proglangs/${proglang.id}`} key={proglang.id}>
-            <li>
-              <strong>{proglang.name}</strong> - {proglang.description}
-            </li>
-          </a>
-        ))}
-      </ul>
-    </div>
+        <ul>
+          {proglangs.map(proglang => (
+            <a href={`/proglangs/${proglang.id}`} key={proglang.id}>
+              <li>
+                <strong>{proglang.name}</strong> - {proglang.description}
+              </li>
+            </a>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h2>Lecturers:</h2>
+
+        <ul>
+          {lecturers.map(lecturer => (
+            <a href={`/lecturers/${lecturer.id}`} key={lecturer.id}>
+              <li>
+                <strong>{lecturer.name} {lecturer.surname}</strong> - Age: {lecturer.age}
+              </li>
+            </a>
+          ))}
+        </ul>
+      </div>
 
 
-    <div>
-      <h2>Lecturers:</h2>
+      <div>
+        <h2>Subjects:</h2>
 
-      <ul>
-        {lecturers.map(lecturer => (
-          <a href={`/lecturers/${lecturer.id}`} key={lecturer.id}>
-            <li>
-              <strong>{lecturer.name} {lecturer.surname}</strong> - Age: {lecturer.age}
-            </li>
-          </a>
-        ))}
-      </ul>
-    </div>
-
-
-    <div>
-      <h2>Subjects:</h2>
-
-      <ul>
-        {subjects.map(subject => (
-          <a href={`/subjects/${subject.id}`} key={subject.id}>
-            <li>
-              <strong>{subject.name}</strong> - {subject.description}
-            </li>
-          </a>
-        ))}
-      </ul>
-    </div>
+        <ul>
+          {subjects.map(subject => (
+            <a href={`/subjects/${subject.id}`} key={subject.id}>
+              <li>
+                <strong>{subject.name}</strong> - {subject.description}
+              </li>
+            </a>
+          ))}
+        </ul>
+      </div>
 
     </>
   )
