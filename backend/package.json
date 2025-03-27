@@ -3,11 +3,8 @@
   "version": "1.0.0",
   "main": "script.js",
   "scripts": {
-    "start": "node script.js",
-    "index": "node index.js",
-    "server": "node server.js",
-    "express-server": "node --watch --watch-preserve-output express-server.js",
-    "app": "node --watch --watch-preserve-output app.js"
+    "start": "node app.js",
+    "dev": "node --watch --watch-preserve-output app.js"
   },
   "author": "",
   "license": "ISC",
