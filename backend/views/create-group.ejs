@@ -1,0 +1,34 @@
+<%- include('partials/header', { title: 'Create group page'})%>
+
+    <div class="main-container">
+        <h1>Create Group</h1>
+    
+        <form action="/group-created" method="POST">
+            <div>
+                <label for="name">Group Name:</label>
+                <input type="text" id="name" name="name" placeholder="TYPE-00" required>
+            </div>
+
+            <div>
+                <label for="description">Group Description:</label>
+                <textarea id="description" name="description" placeholder="CAO 202- year Frontend Developers group" required></textarea>
+            </div>
+
+            <h3>Select Students:</h3>
+            
+            <div>
+                <% students.forEach(student => { %>
+                    <div>
+                        <label>
+                            <input type="checkbox" value="<%= student.id %>" name="students"><%= student.name %> <%= student.surname %>
+                        </label>
+                    </div>
+                <% }) %>
+            </div>
+    
+            <button type="submit">Create Group</button>
+
+        </form>
+    </div>
+
+<%- include('partials/footer')%>

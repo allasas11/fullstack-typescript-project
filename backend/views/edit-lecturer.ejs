@@ -1,0 +1,62 @@
+<%- include('partials/header', { title: 'Edit Lecturer' }) %>
+
+<div class="main-container">
+    <h1>Edit Lecturer</h1>
+
+    <form action="/lecturer-edited" method="POST">
+        <input type="hidden" name="id" value="<%= lecturer.id %>" />
+
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" value="<%= lecturer.name %>" required />
+        </div>
+
+        <div>
+            <label for="surname">Surname:</label>
+            <input type="text" id="surname" name="surname" value="<%= lecturer.surname %>" required />
+        </div>
+
+        <div>
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" value="<%= lecturer.age %>" required />
+        </div>
+
+        <fieldset>
+            <legend>Subjects:</legend>
+            <% subjects.forEach((subject, index) => { %>
+                <div class="form-control">
+                    <input 
+                        type="checkbox" 
+                        name="subjectIds" 
+                        id="subject-<%= index %>" 
+                        value="<%= subject.id %>"
+                        <%= lecturer.subjectIds.includes(subject.id) ? 'checked' : '' %>
+                    />
+                    <label for="subject-<%= index %>"><%= subject.name %></label>
+                </div>
+            <% }) %>
+        </fieldset>
+
+        <fieldset>
+            <legend>Groups:</legend>
+            <% groups.forEach((group, index) => { %>
+                <div class="form-control">
+                    <input 
+                        type="checkbox" 
+                        name="groupIds" 
+                        id="group-<%= index %>" 
+                        value="<%= group.id %>"
+                        <%= lecturer.groupIds.includes(group.id) ? 'checked' : '' %>
+                    />
+                    <label for="group-<%= index %>"><%= group.name %></label>
+                </div>
+            <% }) %>
+        </fieldset>
+
+        <button type="submit">Save Changes</button>
+    </form>
+
+    <a href="/lecturers">Cancel</a>
+</div>
+
+<%- include('partials/footer') %>

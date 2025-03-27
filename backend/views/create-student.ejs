@@ -1,0 +1,37 @@
+<%- include('partials/header', { title: 'Create student page'})%>
+
+    <div class="main-container">
+        <h1>Create student form</h1>
+        
+        <form action="/student-created" method="POST">
+            <div>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required/>
+            </div>
+            <div>
+                <label for="surname">Surname:</label>
+                <input type="text" id="surname" name="surname" required/>
+            </div>
+            <div>
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" required/>
+            </div>
+            <fieldset>
+                <legend>Interests:</legend>
+                <% progLangs.forEach((lang, index) => { %>
+                    <div class="form-control">
+                        <input type="checkbox" name="interests" id="language-<%= index %>" value="<%= lang.name %>" />
+                        <label for="language-<%= index %>"><%= lang.name %></label>
+                    </div>
+                <% }) %>
+            </fieldset>
+            
+                <button type="submit">Create student</button>
+        </form>
+    </div>
+
+<%- include('partials/footer')%>
+
+
+
+

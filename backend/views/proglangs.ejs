@@ -1,0 +1,29 @@
+<%- include('partials/header', { title: 'Programming Languages List' }) %>
+
+<div class="main-container">
+    <% if(progLangs.length > 0) { %>
+        <h1 style="color: lightgreen;">Programming Languages List (<%= progLangs.length %>)</h1>
+    <% } else { %>
+        <h1>No programming languages yet ...</h1>
+    <% } %>
+
+    <% if(newProgLangButton.url && newProgLangButton.title) { %>
+        <a href="<%= newProgLangButton.url %>"><%= newProgLangButton.title %></a>
+    <% } %>
+
+    <% if(progLangs.length > 0) { %>
+        <div>
+            <ul>
+                <% progLangs.forEach(progLang => { %>
+                    <li>
+                        <a href="/proglangs/<%= progLang.id %>"><%= progLang.name %>, <%= progLang.description %></a>
+                    </li>
+                <% }) %>
+            </ul>
+        </div>
+    <% } %>
+
+    <a href="/">Get back to home page</a>
+</div>
+
+<%- include('partials/footer') %>

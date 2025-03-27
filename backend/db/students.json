@@ -1,0 +1,125 @@
+[
+  {
+    "id": "c18d8e4a-6f89-4b27-8ea0-5588a1d1d98c",
+    "name": "Thomas",
+    "surname": "Radler",
+    "age": 27,
+    "interests": [
+      "JavaScript",
+      "React"
+    ],
+    "groupId": "550e8400-e29b-41d4-a716-446655440000"
+  },
+  {
+    "name": "John",
+    "surname": "Doe",
+    "age": 28,
+    "interests": [
+      "JavaScript",
+      "React",
+      "Node.js"
+    ],
+    "id": "562865bc-c968-4013-9503-f5de31d1583d",
+    "groupId": "550e8400-e29b-41d4-a716-446655440000"
+  },
+  {
+    "name": "Bergen",
+    "surname": "Holand",
+    "age": 21,
+    "interests": [
+      "Node.js"
+    ],
+    "id": "9373fac0-01a9-4155-9d8d-4c4430ef57f0",
+    "groupId": "550e8400-e29b-41d4-a716-446655440000"
+  },
+  {
+    "id": "9ce236ff-4208-430b-bef8-46ec8be38931",
+    "name": "Alice",
+    "surname": "Longtail",
+    "age": 27,
+    "interests": [
+      "React",
+      "Node.js"
+    ],
+    "groupId": "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+  },
+  {
+    "id": "45bfa22e-9e81-44c9-970d-8c47e460e4bc",
+    "name": "Dane",
+    "surname": "White",
+    "age": 50,
+    "interests": [
+      "Kotlink "
+    ],
+    "groupId": "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+  },
+  {
+    "name": "Samuel",
+    "surname": "Rodrigez",
+    "age": 20,
+    "interests": [
+      "Python",
+      "C++"
+    ],
+    "id": "875fe9a8-81a5-4bb2-93ef-8d8b5e729fb7",
+    "groupId": "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+  },
+  {
+    "name": "Alberto",
+    "surname": "Solo",
+    "age": 30,
+    "interests": [
+      "Kotlink ",
+      "Java"
+    ],
+    "id": "c00bd943-da46-4134-bbf7-7d627614b33f",
+    "groupId": "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+  },
+  {
+    "name": "Giljermo",
+    "surname": "Cavali",
+    "age": 31,
+    "interests": [
+      "Python",
+      "C++"
+    ],
+    "id": "c39297e8-dd12-4b66-9ae0-9127abb4146a",
+    "groupId": "c9bf9e57-1685-4c89-bafb-ff5af830be8a"
+  },
+  {
+    "name": "Thom",
+    "surname": "Holland",
+    "age": 19,
+    "interests": [
+      "React",
+      "Node.js"
+    ],
+    "id": "94c387aa-72ed-43dd-9563-b34ec35710dd",
+    "groupId": "c9bf9e57-1685-4c89-bafb-ff5af830be8a"
+  },
+  {
+    "name": "Samanta",
+    "surname": "Mumba",
+    "age": 23,
+    "interests": [
+      "Python",
+      "C++"
+    ],
+    "id": "832aeb5e-9b2d-4a9b-b014-09c880a5c76b",
+    "groupId": "c9bf9e57-1685-4c89-bafb-ff5af830be8a"
+  },
+  {
+    "name": "Leila",
+    "surname": "Cormoran",
+    "age": 26,
+    "interests": [
+      "Kotlink ",
+      "Java"
+    ],
+    "id": "24b996e5-46aa-4015-b79b-a5fc5ff0ebd5",
+    "groupId": "41ea2a87-89ae-449b-9d84-584602892372"
+  }
+]
+
+
+

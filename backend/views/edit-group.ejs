@@ -1,0 +1,33 @@
+<%- include('partials/header', { title: 'Edit group page'})%>
+
+    <div class="main-container">
+        <h1>Edit Group</h1>
+        
+        <form action="/group-edited/<%= group.id %>" method="POST">
+            <div>
+                <label for="name">Group Name:</label>
+                <input type="text" id="name" name="name" value="<%= group.name %>" required>
+            </div>
+            <div>
+                <label for="description">Group Description:</label>
+                <textarea id="description" name="description" required><%= group.description %></textarea>
+            </div>
+
+            <h3>Select Students:</h3>
+            
+            <div>
+                <% students.forEach(student => { %>
+                    <div>
+                        <label>
+                            <input type="checkbox" name="students" value="<%= student.id %>"<%= group.students && group.students.includes(student.id) ? 'checked' : '' %>><%= student.name %> <%= student.surname %>
+                        </label>
+                    </div>
+                <% }) %>
+            </div>
+
+            <button type="submit">Save Changes</button>
+        </form>
+        <a href="/groups">Back to Groups</a>
+    </div>
+
+<%- include('partials/footer')%>

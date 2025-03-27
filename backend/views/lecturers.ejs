@@ -1,0 +1,30 @@
+
+<%- include('partials/header', { title: 'Lecturers List' }) %>
+
+<div class="main-container">
+    <% if(lecturers.length > 0) { %>
+        <h1 style="color: lightgreen;">Lecturers List (<%= lecturers.length %>)</h1>
+    <% } else { %>
+        <h1>No lecturers yet ...</h1>
+    <% } %>
+
+    <% if(newLecturerButton.url && newLecturerButton.title) { %>
+        <a href="<%= newLecturerButton.url %>"><%= newLecturerButton.title %></a>
+    <% } %>
+
+    <% if(lecturers.length > 0) { %>
+        <div>
+            <ul>
+                <% lecturers.forEach(lecturer => { %>
+                    <li>
+                        <a href="/lecturers/<%= lecturer.id %>"><%= lecturer.name %> <%= lecturer.surname %></a>
+                    </li>
+                <% }) %>
+            </ul>
+        </div>
+    <% } %>
+
+    <a href="/">Get back to home page</a>
+</div>
+
+<%- include('partials/footer') %>

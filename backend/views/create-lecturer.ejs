@@ -1,0 +1,58 @@
+<%- include('partials/header', { title: 'Create Lecturer' }) %>
+
+<div class="main-container">
+    <h1>Create a New Lecturer</h1>
+
+    <form action="/lecturer-created" method="POST">
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required />
+        </div>
+
+        <div>
+            <label for="surname">Surname:</label>
+            <input type="text" id="surname" name="surname" required />
+        </div>
+
+        <div>
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required />
+        </div>
+
+        <fieldset>
+            <legend>Subjects:</legend>
+            <% subjects.forEach((subject, index) => { %>
+                <div class="form-control">
+                    <input 
+                        type="checkbox" 
+                        name="subjectIds" 
+                        id="subject-<%= index %>" 
+                        value="<%= subject.id %>"
+                    />
+                    <label for="subject-<%= index %>"><%= subject.name %></label>
+                </div>
+            <% }) %>
+        </fieldset>
+
+        <fieldset>
+            <legend>Groups:</legend>
+            <% groups.forEach((group, index) => { %>
+                <div class="form-control">
+                    <input 
+                        type="checkbox" 
+                        name="groupIds" 
+                        id="group-<%= index %>" 
+                        value="<%= group.id %>"
+                    />
+                    <label for="group-<%= index %>"><%= group.name %></label>
+                </div>
+            <% }) %>
+        </fieldset>
+
+        <button type="submit">Create</button>
+    </form>
+
+    <a href="/lecturers">Cancel</a>
+</div>
+
+<%- include('partials/footer') %>

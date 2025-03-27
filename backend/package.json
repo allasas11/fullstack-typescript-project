@@ -1,0 +1,32 @@
+{
+  "name": "2025-03-17-node.js-fundamentals",
+  "version": "1.0.0",
+  "main": "script.js",
+  "scripts": {
+    "start": "node script.js",
+    "index": "node index.js",
+    "server": "node server.js",
+    "express-server": "node --watch --watch-preserve-output express-server.js",
+    "app": "node --watch --watch-preserve-output app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "casual": "^1.6.2",
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "pluralize": "^8.0.0",
+    "systeminformation": "^5.25.11",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.23.0",
+    "eslint": "^9.23.0",
+    "globals": "^16.0.0"
+  }
+}

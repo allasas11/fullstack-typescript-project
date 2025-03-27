@@ -1,0 +1,104 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  /* padding: 0;
+  margin: 0; */
+}
+
+body {
+    background-color: darkslategray;
+    color: lightgreen;
+}
+
+
+.main-container {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: slategray;
+    margin: 1rem;
+}
+
+.nav-container {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    margin: 0.5rem 1rem;
+    background-color: mediumslateblue;
+}
+
+
+.main-footer-container {
+    text-align: center;
+}
+
+
+a {
+    color: whitesmoke;
+}
+
+a:hover {
+    color: darkturquoise;
+}
+
+.upside-down {
+    display: inline-block;
+    transform: rotate(180deg);
+}
+
+header {
+    text-align: center;
+}
+
+nav ul {
+    list-style: none; 
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+nav ul li {
+    display: inline; 
+}
+
+
+.nav-list {
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    color: teal;
+    text-decoration: none;
+}
+
+.nav-list a {
+    text-decoration: none;
+}
+
+.subject-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    list-style: none;
+    width: 100%; 
+    max-width: 100%; 
+}
+
+.subject-item {
+    background-color: teal;
+    border: 1px solid lightgreen;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    width: 200px;
+    min-width: 150px;
+    text-align: start;
+}
+
+.subject-item a {
+    text-decoration: none; 
+
+}
+
+.subject-item a:hover {
+    color: lightgreen;
+
+}
+
+

@@ -1,0 +1,71 @@
+[
+  {
+    "id": "f47ac10b-58cc-4372-a567-0e02b2c3d478",
+    "name": "Frontend Development",
+    "description": "Learn to build interactive user interfaces using modern frontend technologies.",
+    "programmingLanguages": [
+      "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "c9bf9e57-1685-4c89-bafb-ff5af830be8a"
+    ],
+    "lecturerId": "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+  },
+  {
+    "id": "c9bf9e57-1685-4c89-bafb-ff5af830be89",
+    "name": "Backend Development",
+    "description": "Master server-side development with Node.js and Java.",
+    "programmingLanguages": [
+      "550e8400-e29b-41d4-a716-446655440000",
+      "30b5e417-95b4-4605-a3c1-49551f6ee2b1"
+    ],
+    "lecturerId": "c9bf9e57-1685-4c89-bafb-ff5af830be8a"
+  },
+  {
+    "id": "d594d83f-f85d-4dda-aab9-c1a17617cf51",
+    "name": "Mobile App Development",
+    "description": "Develop cross-platform mobile applications using Kotlin and Java.",
+    "programmingLanguages": [
+      "d594d83f-f85d-4dda-aab9-c1a17617cf50",
+      "30b5e417-95b4-4605-a3c1-49551f6ee2b1"
+    ],
+    "lecturerId": "c3fbca54-b712-42c8-8391-9a2c3cfc8165"
+  },
+  {
+    "id": "4677d5fb-5634-48a4-956d-4dba1cae6535",
+    "name": "Fullstack Development",
+    "description": "Become proficient in both frontend and backend development.",
+    "programmingLanguages": [
+      "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "c9bf9e57-1685-4c89-bafb-ff5af830be8a",
+      "550e8400-e29b-41d4-a716-446655440000"
+    ],
+    "lecturerId": "4677d5fb-5634-48a4-956d-4dba1cae6534"
+  },
+  {
+    "id": "fcad8af8-09c3-47b5-9f61-ddc559a0808c",
+    "name": "Data Science with Python",
+    "description": "Analyze and visualize data using Python libraries like Pandas and NumPy.",
+    "programmingLanguages": [
+      "fcad8af8-09c3-47b5-9f61-ddc559a0808b"
+    ],
+    "lecturerId": "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+  },
+  {
+    "name": "UI/UX Design Advance",
+    "description": "Create engaging user experiences and design user-friendly interfaces.",
+    "programmingLanguages": [
+      "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+    ],
+    "lecturerId": "92db1d19-436b-4d73-8a20-72992290c8ad",
+    "id": "42e7fdb1-085b-464b-97e9-110b5c2cc3e2"
+  },
+  {
+    "id": "8a76304a-dee6-4925-b69d-f172a1c37530",
+    "name": "Artificial Intelligence",
+    "description": "Explore machine learning, deep learning, and AI-powered applications.",
+    "programmingLanguages": [
+      "fcad8af8-09c3-47b5-9f61-ddc559a0808b",
+      "63a1037e-b19c-459c-bbe1-8922a8653a78"
+    ],
+    "lecturerId": "92db1d19-436b-4d73-8a20-72992290c8ad"
+  }
+]

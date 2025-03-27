@@ -1,0 +1,53 @@
+<%- include('partials/header', { title: 'Edit Subject' }) %>
+
+<div class="main-container">
+    <h1>Edit Subject</h1>
+
+    <form action="/subject-edited/<%= subject.id %>" method="POST">
+        <input type="hidden" name="id" value="<%= subject.id %>" />
+
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" value="<%= subject.name %>" required />
+        </div>
+
+        <div>
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="4" required><%= subject.description %></textarea>
+        </div>
+
+        <fieldset>
+            <legend>Programming Languages:</legend>
+            <% progLangs.forEach((lang, index) => { %>
+                <div class="form-control">
+                    <input 
+                        type="checkbox" 
+                        name="programmingLanguages" 
+                        id="proglang-<%= index %>" 
+                        value="<%= lang.id %>"
+                        <%= subject.programmingLanguages.includes(lang.id) ? 'checked' : '' %>
+                    />
+                    <label for="proglang-<%= index %>"><%= lang.name %></label>
+                </div>
+            <% }) %>
+        </fieldset>
+
+        <div>
+            <label for="lecturerId">Lecturer:</label>
+            <select id="lecturerId" name="lecturerId" required>
+                <option value="">-- Select a Lecturer --</option>
+                <% lecturers.forEach(lecturer => { %>
+                    <option value="<%= lecturer.id %>" <%= subject.lecturerId === lecturer.id ? 'selected' : '' %>>
+                        <%= lecturer.name %> <%= lecturer.surname %>
+                    </option>
+                <% }) %>
+            </select>
+        </div>
+
+        <button type="submit">Save Changes</button>
+    </form>
+
+    <a href="/subjects">Cancel</a>
+</div>
+
+<%- include('partials/footer') %>

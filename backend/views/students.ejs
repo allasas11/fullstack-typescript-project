@@ -1,0 +1,14 @@
+<%- include('partials/header', { title: 'Students List'})%>
+    
+    <div class="main-container">
+
+        <% if(newStudentButton.url && newStudentButton.title) { %>
+            <a href="<%= newStudentButton.url %>"><%= newStudentButton.title %></a>
+        <% } %>
+
+        <%- include('partials/students-list')%>
+
+        <a href="/">Get back to home page</a>
+    </div>
+
+<%- include('partials/footer')%>

@@ -1,0 +1,37 @@
+
+
+<%- include('partials/header', { title: 'Subjects List' }) %>
+
+<div class="main-container">
+    <% if(subjects.length > 0) { %>
+        <h1 style="color: lightgreen;">Subjects List (<%= subjects.length %>)</h1>
+    <% } else { %>
+        <h1>No subjects yet ...</h1>
+    <% } %>
+
+    <% if(newSubjectButton.url && newSubjectButton.title) { %>
+        <a href="<%= newSubjectButton.url %>"><%= newSubjectButton.title %></a>
+    <% } %>
+
+    <% if(subjects.length > 0) { %>
+        <div>
+            <ul class="subject-list">
+                <% subjects.forEach(subject => { %>
+                    <li class="subject-item">
+                        <a href="/subjects/<%= subject.id %>">
+                            <div >
+                                <p><%= subject.name %></p>
+                                <p><%= subject.description %></p>
+                            </div>
+                        </a>
+                    </li>
+                <% }) %>
+            </ul>
+        </div>
+    <% } %>
+
+    <a href="/">Get back to home page</a>
+</div>
+
+<%- include('partials/footer') %>
+

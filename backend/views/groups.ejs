@@ -1,0 +1,30 @@
+<%- include('partials/header', { title: 'Groups list'})%>
+
+    <div class="main-container">
+        <% if(groups.length > 0) { %>
+            <h1 style="color: lightgreen;">Groups list (<%= groups.length %>)</h1>
+        <% } else { %>
+                <h1>No groups yet ... </h1>
+        <% } %>
+
+        
+        <% if(newGroupButton.url && newGroupButton.title) { %>
+            <a href="<%= newGroupButton.url %>"><%= newGroupButton.title %></a>
+        <% } %>
+
+        <% if(groups.length > 0) { %>         
+            <div>
+                <ul>
+                    <% groups.forEach(group => { %>
+                        <li>
+                            <a href="/groups/<%= group.id %>"><%= group.name %>, <%= group.description %></a>
+                        </li>
+                    <% }) %>
+                </ul>
+            </div>
+        <% } %>
+
+        <a href="/">Get back to home page</a>
+    </div>
+
+<%- include('partials/footer')%>

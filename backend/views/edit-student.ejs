@@ -1,0 +1,38 @@
+<%- include('partials/header', { title: 'Edit student page'}) %>
+
+<div class="main-container">
+    <h1>Edit Student Form</h1>
+
+    <form action="/student-edited" method="POST">
+        <input type="hidden" name="id" value="<%= student.id %>" />
+
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" value="<%= student.name %>" required />
+        </div>
+
+        <div>
+            <label for="surname">Surname:</label>
+            <input type="text" id="surname" name="surname" value="<%= student.surname %>" required />
+        </div>
+
+        <div>
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" value="<%= student.age %>" required />
+        </div>
+
+        <fieldset>
+            <legend>Interests:</legend>
+            <% progLangs.forEach((lang, index) => { %>
+                <div class="form-control">
+                    <input type="checkbox" name="interests" id="language-<%= index %>" value="<%= lang.name %>" <%= student.interests.includes(lang.name) ? 'checked' : '' %>/>
+                    <label for="language-<%= index %>"><%= lang.name %></label>
+                </div>
+            <% }) %>
+        </fieldset>
+
+        <button type="submit">Edit Student</button>
+    </form>
+</div>
+
+<%- include('partials/footer') %>

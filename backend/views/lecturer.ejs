@@ -1,0 +1,27 @@
+<%- include('partials/header', { title: 'Lecturer Details' }) %>
+
+<div class="main-container">
+    <% if(lecturer) { %>
+        <h1><%= lecturer.name %> <%= lecturer.surname %></h1>
+
+        <a href="/edit-lecturer/<%= lecturer.id %>">Edit</a>
+
+        <p>Age: <%= lecturer.age %></p>
+        <p>Groups: <%= groupNames.length > 0 ? groupNames.join(', ') : 'No groups' %></p>
+        <p>Subjects: <%= subjectNames.length > 0 ? subjectNames.join(', ') : 'No subjects' %></p>
+
+
+        <form action="/delete-lecturer" method="POST" >
+            <input type="hidden" name="lecturerId" value="<%= lecturer.id %>">
+            <button type="submit">
+                Delete
+            </button>
+        </form>
+    <% } else { %>
+        <h1>Lecturer with ID "<%= id %>" not found</h1>
+    <% } %>
+
+    <a href="/lecturers">Back to lecturers list</a>
+</div>
+
+<%- include('partials/footer') %>

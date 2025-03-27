@@ -1,0 +1,36 @@
+[
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "TYPE-25",
+    "description": "CAO 2025 year Frontend Developers group",
+    "students": [
+      "c18d8e4a-6f89-4b27-8ea0-5588a1d1d98c",
+      "562865bc-c968-4013-9503-f5de31d1583d"
+    ]
+  },
+  {
+    "id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    "name": "TYPE-24",
+    "description": "CAO 2024 year Frontend Developers group",
+    "students": [
+      "9373fac0-01a9-4155-9d8d-4c4430ef57f0",
+      "9ce236ff-4208-430b-bef8-46ec8be38931",
+      "45bfa22e-9e81-44c9-970d-8c47e460e4bc"
+    ]
+  },
+  {
+    "id": "c9bf9e57-1685-4c89-bafb-ff5af830be8a",
+    "name": "TYPE-23",
+    "description": "CAO 2023 year Frontend Developers group",
+    "students": []
+  },
+  {
+    "name": "TYPE-26",
+    "description": "CAO 2026 year Frontend Developers group.",
+    "students": [
+      "45bfa22e-9e81-44c9-970d-8c47e460e4bc",
+      "24b996e5-46aa-4015-b79b-a5fc5ff0ebd5"
+    ],
+    "id": "41ea2a87-89ae-449b-9d84-584602892372"
+  }
+]

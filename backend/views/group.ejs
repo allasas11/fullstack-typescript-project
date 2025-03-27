@@ -1,0 +1,35 @@
+<%- include('partials/header', { title: group.name })%>
+
+    <div class="main-container">
+        <% if (group) { %>
+            <div>
+                <h1><%= group.name %></h1>
+                
+                <form action="/delete-group" method="POST">
+                    <input type="hidden" name="groupId" value="<%= group.id %>" />
+                    <button type="submit">Delete Group</button>
+                </form>
+                
+                <a href="/edit-group/<%= group.id %>">Edit Group</a>
+                
+                <a href="/groups">Back to Groups</a>
+
+                <h2>Assigned Students:</h2>
+                <ul>
+                    <% if (assignedStudents.length > 0) { %>
+                        <% assignedStudents.forEach(student => { %>
+                            <li><%= student.name %> <%= student.surname %></li>
+                        <% }); %>
+                    <% } else { %>
+                        <li>No students assigned to this group.</li>
+                    <% } %>
+                </ul>
+            </div>
+        <% } else { %>
+            <h1>Group not found</h1>
+            <p>Group with id: <%= id %> was not found</p>
+            <a href="/groups">Back to groups list</a>
+        <% } %>
+    </div>
+
+<%- include('partials/footer')%>

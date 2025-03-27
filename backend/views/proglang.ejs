@@ -1,0 +1,37 @@
+<%- include('partials/header', { title: 'Programming Language Details' }) %>
+
+<div class="main-container">
+    <% if(progLang) { %>
+        <h1><%= progLang.name %></h1>
+
+        <a href="/edit-proglang/<%= progLang.id %>" >Edit</a>
+        
+        <p><%= progLang.description || 'No description available' %></p>
+     
+        <h2>Students Interested in <%= progLang.name %>:</h2>
+        <% if(interestedStudents.length > 0) { %>
+            <div>
+                <ul>
+                    <% interestedStudents.forEach(student => { %>
+                        <li><%= student.name %> <%= student.surname %></li>
+                    <% }) %>
+                </ul>
+            </div>
+
+        <% } else { %>
+            <p>No students are currently interested in this programming language.</p>
+        <% } %>
+
+        <form action="/delete-proglang" method="POST" >
+            <input type="hidden" name="progLangId" value="<%= progLang.id %>">
+            <button type="submit">Delete</button>
+        </form>
+
+    <% } else { %>
+        <h1>Programming language with ID "<%= id %>" not found</h1>
+    <% } %>
+
+    <a href="/proglangs">Back to programming languages list</a>
+</div>
+
+<%- include('partials/footer') %>

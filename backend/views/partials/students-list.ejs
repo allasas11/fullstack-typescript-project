@@ -1,0 +1,46 @@
+<div class="students-list-container">
+
+    <% if(students.length > 0) { %>
+        <h1 style="color: lightgreen;">Students list (<%= students.length %>)</h1>
+    <% } else { %>
+        <h1>No students yet ... </h1>
+    <% } %>
+
+
+    <form action="/students" method="GET">
+        <div class="form-control">
+            <label for="_limit">Students par page</label>
+            <select name="_limit" id="_limit" value="10">
+                <option value="5" <%= limit == '5' ? 'selected' : '' %>>5</option>
+                <option value="10" <%= limit == '10' ? 'selected' : '' %>>10</option>
+                <option value="15" <%= limit == '15' ? 'selected' : '' %>>15</option>
+            </select>
+        </div>
+
+        <button type="submit">Refresh</button>
+    </form>
+
+
+    <% if(students.length > 0) { %>
+    <div>
+        <ol>
+            <% students.forEach(student => { %>
+                <li>
+                    <a href="/students/<%= student.id %>"><%= student.name %> <%= student.surname %> <%= student.age %> y. </a>
+                </li>
+            <% }) %>
+        </ol>
+    </div>
+    <% } %>
+
+    <div>
+        <% if (prevPage) { %>
+            <a href="<%= prevPage %>">Previous</a>
+        <% } %>
+    
+        <% if (nextPage) { %>
+            <a href="<%= nextPage %>">Next</a>
+        <% } %>
+    </div>
+
+</div>

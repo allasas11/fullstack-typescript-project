@@ -1,0 +1,76 @@
+[
+  {
+    "id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    "name": "Alice",
+    "surname": "Smith",
+    "age": 35,
+    "subjectIds": [
+      "42e7fdb1-085b-464b-97e9-110b5c2cc3e2"
+    ],
+    "groupIds": [
+      "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+    ]
+  },
+  {
+    "id": "c9bf9e57-1685-4c89-bafb-ff5af830be8a",
+    "name": "Michael",
+    "surname": "Stronger",
+    "age": 42,
+    "subjectIds": [
+      "d594d83f-f85d-4dda-aab9-c1a17617cf51"
+    ],
+    "groupIds": [
+      "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "c9bf9e57-1685-4c89-bafb-ff5af830be8a"
+    ]
+  },
+  {
+    "id": "c3fbca54-b712-42c8-8391-9a2c3cfc8165",
+    "name": "Roger",
+    "surname": "Slighter",
+    "age": 48,
+    "subjectIds": [
+      "c9bf9e57-1685-4c89-bafb-ff5af830be89"
+    ],
+    "groupIds": [
+      "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+    ]
+  },
+  {
+    "id": "4677d5fb-5634-48a4-956d-4dba1cae6534",
+    "name": "Robert",
+    "surname": "Rounder",
+    "age": 49,
+    "subjectIds": [
+      "fcad8af8-09c3-47b5-9f61-ddc559a0808c"
+    ],
+    "groupIds": [
+      "550e8400-e29b-41d4-a716-446655440000"
+    ]
+  },
+  {
+    "id": "92db1d19-436b-4d73-8a20-72992290c8ad",
+    "name": "Alfonso",
+    "surname": "Gerero",
+    "age": 36,
+    "subjectIds": [
+      "f47ac10b-58cc-4372-a567-0e02b2c3d478"
+    ],
+    "groupIds": [
+      "c9bf9e57-1685-4c89-bafb-ff5af830be8a",
+      "41ea2a87-89ae-449b-9d84-584602892372"
+    ]
+  },
+  {
+    "id": "23486cb8-880b-40ee-a4bb-44b72cba6c4d",
+    "name": "Tiago",
+    "surname": "Velasco",
+    "age": 28,
+    "subjectIds": [
+      "8a76304a-dee6-4925-b69d-f172a1c37530"
+    ],
+    "groupIds": [
+      "41ea2a87-89ae-449b-9d84-584602892372"
+    ]
+  }
+]

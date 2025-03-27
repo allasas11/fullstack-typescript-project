@@ -1,0 +1,23 @@
+<%- include('partials/header', { title: 'Create Programming Language' }) %>
+
+<div class="main-container">
+    <h1>Create a new programming language</h1>
+
+    <form action="/proglang-created" method="POST">
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+
+        <div>
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" required></textarea>
+        </div>
+            
+        <button type="submit">Create</button>
+    </form>
+
+    <a href="/proglangs">Cancel</a>
+</div>
+
+<%- include('partials/footer') %>

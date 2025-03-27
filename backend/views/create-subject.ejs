@@ -1,0 +1,53 @@
+<%- include('partials/header', { title: 'Create Subject' }) %>
+
+<div class="main-container">
+    <h1>Create a New Subject</h1>
+
+    <form action="/subject-created" method="POST">
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required />
+        </div>
+
+        <div>
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="4" required></textarea>
+        </div>
+
+        <fieldset>
+
+            <legend>Programming Languages:</legend>
+
+            <% progLangs.forEach((lang, index) => { %>
+                <div class="form-control">
+                    <input 
+                        type="checkbox" 
+                        name="programmingLanguages" 
+                        id="proglang-<%= index %>" 
+                        value="<%= lang.id %>"
+                    />
+                    <label for="proglang-<%= index %>"><%= lang.name %></label>
+                </div>
+            <% }) %>
+            
+        </fieldset>
+
+        <div>
+            <label for="lecturerId">Lecturer:</label>
+            <select id="lecturerId" name="lecturerId" required>
+                <option value="">-- Select a Lecturer --</option>
+                <% lecturers.forEach(lecturer => { %>
+                    <option value="<%= lecturer.id %>">
+                        <%= lecturer.name %> <%= lecturer.surname %>
+                    </option>
+                <% }) %>
+            </select>
+        </div>
+
+        <button type="submit">Create</button>
+    </form>
+
+    <a href="/subjects">Cancel</a>
+</div>
+
+<%- include('partials/footer') %>
