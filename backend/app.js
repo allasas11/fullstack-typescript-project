@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express = require('express')
 const path = require('path')
 const process = require('process')
@@ -10,7 +12,6 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 
 const app = express()
-
 
 
 app.use(bodyParser.urlencoded({ extended: true}))
@@ -32,6 +33,7 @@ const groupsRoutes = require('./routes/groups')
 const proglangsRouter = require('./routes/proglangs')
 const lecturersRouter = require('./routes/lecturers')
 const subjectsRouter = require('./routes/subjects')
+const { connectToDB } = require('./db')
 
 
 // API routes //
@@ -64,8 +66,15 @@ app.get('/', (req, res) => {
     res.render('app')
 })
 
-require('dotenv').config()
 
 
-const PORT = process.env.PORT
-app.listen(PORT, () => console.log('Server is running on http://localhost:3010'))
+
+const PORT = process.env.PORT || 3000
+
+connectToDB()
+    .then(() => {
+        app.listen(PORT, () => console.log(`Server is running on ${PORT}.`))
+    })
+    .catch(error => {
+        console.error('Failed to connect to MongoDB: ', error)
+    })

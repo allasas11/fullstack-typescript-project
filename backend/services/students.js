@@ -1,152 +1,44 @@
-
-const { v4: uuid } = require('uuid')
-
-const path = require('path')
-const fs = require('fs')
-const { embedData } = require('../lib')
-
-
 //FUNCTIONS
 
+const { ObjectId } = require("mongodb")
+const { getDB } = require("../db")
 
 //GET
-function getStudents(query) {
-    const filePath = path.join('db', 'students.json')
-
-    if(!fs.existsSync(filePath)) {
-        throw new Error('File does not exist')
-    }
-
-    const fileContent = fs.readFileSync(filePath)
-
-    const existingData = JSON.parse(fileContent)
-
-    let formedData = existingData
-
-    if(query) {
-        const start = parseInt(query._start ?? '0', 10)
-        const limit = query._limit ? parseInt(query._limit, 10) : null
-        
-        if (limit !== null) {
-            const end = start + limit
-            formedData = existingData.slice(start, end)
-        } else {
-            formedData = existingData.slice(start)
-        }
-
-        const embed = query._embed
-
-        if(embed) {
-
-            if(Array.isArray(embed)) {
-                embed.forEach(item => {
-                    formedData = embedData(formedData, item)
-                })
-            } else {
-                formedData = embedData(formedData, embed)
-            }
-        }
-
-
-    }
-
-    return formedData
-
+async function getStudents() {
+    const db = getDB()
+    const students = await db.collection('students').find().toArray()
+    return students
 }
 
 //GET
-function getStudentById(id) {
-
-    const filePath = path.join('db', 'students.json')
-
-    if(!fs.existsSync(filePath)) {
-        throw new Error('File does not exist')
-    }
-
-    const fileContent = fs.readFileSync(filePath)
-
-    const students = JSON.parse(fileContent)
-
-    const foundStudent = students.find(student => student.id === id )
-
-    return foundStudent
-
-
+async function getStudentById(id) {
+    const db = getDB()
+    const student = await db.collection('students').findOne({_id: ObjectId.createFromHexString(id)})
+    return student
 }
 
 //POST
-function createStudent(body) {
-    const id = uuid()
-
-    const interests = []
-    
-    if(body.interests) {
-        if(typeof body.interests === 'string') {
-            interests.push(body.interests)
-        } else {
-            interests.push(...body.interests)
-
-        }
-    }
-
-    const newStudent = { 
-        ...body,
-        age: body.age !== undefined ? Number(body.age) : null,
-        interests,
-        id
-    }
-
-    const students = getStudents()
-
-    students.push(newStudent)
-
-    const stringifiedData = JSON.stringify(students, null, 2)
-
-    const filePath = path.join('db', 'students.json')
-    fs.writeFileSync(filePath, stringifiedData)
+async function createStudent(body) {
+    const db = getDB()
+    const response = await db.collection('students').insertOne(body)
+    return response
  
-    return newStudent
 }
 
 //UPDATE
-function updateStudent(body) {
-    const { id, interests: bodyInterests, age, ...rest } = body;
-
-    const students = getStudents();
-
-    const updatedStudents = students.map(student => {
-        if (student.id === id) {
-            const interests = Array.isArray(bodyInterests)
-                ? bodyInterests
-                : bodyInterests
-                ? [bodyInterests]
-                : [];
-
-            return {
-                ...student,
-                ...rest,
-                age: age !== undefined ? Number(age) : student.age,
-                interests,
-            };
-        }
-        return student;
-    });
-
-    const filePath = path.join('db', 'students.json');
-    fs.writeFileSync(filePath, JSON.stringify(updatedStudents, null, 2));
-
-    return updatedStudents.find(student => student.id === id);
+async function updateStudent(data) {
+    const db = getDB()
+    const { id, ...updateData } = data
+    const response = await db.collection('students').updateOne({_id: ObjectId.createFromHexString(id)}, { $set: updateData})
+    return response
 }
 
 //DELETE
-function removeStudent(id) {
-    const students = getStudents()
-    const updatedStudents = students.filter(student => student.id !== id)
+async function removeStudent(id) {
+    const db = getDB()
+    const response = await db.collection('students').deleteOne({_id: ObjectId.createFromHexString(id)})
+    return response
 
-    const stringifiedData = JSON.stringify(updatedStudents, null, 2)
-
-    const filePath = path.join('db', 'students.json')
-    fs.writeFileSync(filePath, stringifiedData)
     
 }
 
