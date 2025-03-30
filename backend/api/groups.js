@@ -4,55 +4,76 @@ const { getGroups, getGroupById, createGroup, updateGroup, removeGroup } = requi
 
 const router = express.Router()
 
-router.get('/', (req, res) => {
-    const groups = getGroups()
-    res.send(groups)
+
+//API
+
+router.get('/', async (req, res) => {
+    try {
+        const data = await getGroups()
+        res.send(data)
+    } catch (error) {
+        console.error('Error fetching groups:', error)
+        res.status(500).send({ error: 'Internal server error' })
+    }
 })
 
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
     const { id } = req.params
-    const group = getGroupById(id, req.query)
 
-    if (!group) {
-        return res.status(404).send({ message: 'Group not found' })
+    try {
+        const group = await getGroupById(id)
+        if (!group) {
+            return res.status(404).send({ message: 'Group not found' })
+        }
+        res.send(group)
+    } catch (error) {
+        console.error('Error fetching group:', error)
+        res.status(500).send({ error: 'Internal server error' })
     }
+})
 
-    res.send(group)
+
+router.post('/', async (req, res) => {
+    const { body } = req
+
+    try {
+        const response = await createGroup(body)
+        res.send(response)
+    } catch (error) {
+        console.error('Error creating group:', error)
+        res.status(500).send({ error: 'Internal server error' })
+    }
+})
+
+
+router.put('/:id', async (req, res) => {
+    const { id } = req.params
+    const { body } = req
+
+    try {
+        const response = await updateGroup(body, id)
+        res.send({ message: 'Group updated successfully', response, body: { ...body, id } })
+    } catch (error) {
+        console.error('Error updating group:', error)
+        res.status(500).send({ error: 'Internal server error' })
+    }
 });
 
 
-router.post('/', (req, res) => {
-    const { body } = req
-
-    if (!body.name) {
-        return res.status(400).send({ message: 'Group name is required' })
-    }
-
-    const createdGroup = createGroup(body)
-    res.status(201).send(createdGroup)
-})
-
-
-router.put('/:id', (req, res) => {
-    const { id } = req.params
-    const { body } = req
-
-    const updatedGroup = updateGroup({ ...body, id })
-
-    if (!updatedGroup) {
-        return res.status(404).send({ message: 'Group not found' })
-    }
-
-    res.send(updatedGroup)
-})
-
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
     const { id } = req.params
 
-    removeGroup(id)
-
-    res.send({ message: 'Group was successfully removed', id })
+    try {
+        const response = await removeGroup(id);
+        if (response.deletedCount === 0) {
+            return res.status(404).send({ message: 'Group not found' })
+        }
+        res.send({ message: 'Group deleted successfully', id, response })
+    } catch (error) {
+        console.error('Error deleting group:', error)
+        res.status(500).send({ error: 'Internal server error' })
+    }
 })
 
 module.exports = router

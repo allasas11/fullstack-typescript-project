@@ -1,120 +1,37 @@
+const { ObjectId } = require("mongodb")
+const { getDB } = require("../db")
 
-const { v4: uuid } = require('uuid')
-
-const path = require('path')
-
-const fs = require('fs')
-const { embedData } = require('../lib')
-
-
-// FUNCTIONS //
-
-function getGroups(query) {
-    const filePath = path.join('db', 'groups.json')
-
-    if (!fs.existsSync(filePath)) {
-        throw new Error('File does not exist')
-    }
-
-    const fileContent = fs.readFileSync(filePath)
-    const existingData = JSON.parse(fileContent)
-
-    let formedData = existingData
-
-    if(query) {
-        const start = parseInt(query._start ?? '0', 10)
-        const limit = parseInt(query._limit ?? '5', 10)
-        
-        
-        if(limit) {   
-            const end = start + limit
-            formedData = existingData.slice(start, end)
-        }
-    }
-
-    return formedData
-
+async function getGroups() {
+    const db = getDB()
+    const groups = await db.collection('groups').find().toArray()
+    return groups
 }
 
-function getGroupById(id, query) {
-    console.log(query)
-    const groups = getGroups()
-    const foundData = groups.find(group => group.id === id)
-
-    let formedData = {...foundData}
-
-    if(query) {
-        const embed = query._embed
-
-        if(embed) {
-
-            if(Array.isArray(embed)) {
-                embed.forEach(item => {
-                    formedData = embedData(formedData, item, 'group')
-                })
-            } else {
-                formedData = embedData(formedData, embed, 'group')
-            }
-        }
-
-
-    }
-
-    return formedData
+async function getGroupById(id) {
+    const db = getDB()
+    const group = await db.collection('groups').findOne({ _id: ObjectId.createFromHexString(id) })
+    return group
 }
 
-function createGroup(body) {
-    const id = uuid()
-
-    const students = Array.isArray(body.students) ? body.students : body.students ? [body.students] : [];
-
-
-    const newGroup = {
-        ...body,
-        students,
-        id
-    };
-
-    const groups = getGroups()
-
-    groups.push(newGroup)
-
-    const filePath = path.join('db', 'groups.json')
-    fs.writeFileSync(filePath, JSON.stringify(groups, null, 2))
-
-    return newGroup
+async function createGroup(body) {
+    const db = getDB()
+    const response = await db.collection('groups').insertOne(body)
+    return response
 }
 
-function updateGroup(body) {
-    const { id, students: bodyStudents, ...rest  } = body
-
-    const groups = getGroups()
-
-    const updatedGroups = groups.map(group => {
-        if (group.id === id) {
-            const updatedGroup = {
-                ...group,
-                ...rest,
-                students: Array.isArray(bodyStudents) ? bodyStudents : bodyStudents ? [bodyStudents] : []
-            };
-            return updatedGroup;
-        }
-        return group
-    });
-
-    const filePath = path.join('db', 'groups.json')
-    fs.writeFileSync(filePath, JSON.stringify(updatedGroups, null, 2))
-
-    return updatedGroups.find(group => group.id === id)
+async function updateGroup(data, id) {
+    const db = getDB()
+    const response = await db.collection('groups').updateOne(
+        { _id: ObjectId.createFromHexString(id) },
+        { $set: data }
+    );
+    return response
 }
 
-function removeGroup(id) {
-    const groups = getGroups();
-    const updatedGroups = groups.filter(group => group.id !== id)
-
-
-    const filePath = path.join('db', 'groups.json');
-    fs.writeFileSync(filePath, JSON.stringify(updatedGroups, null, 2))
+async function removeGroup(id) {
+    const db = getDB()
+    const response = await db.collection('groups').deleteOne({ _id: ObjectId.createFromHexString(id) })
+    return response
 }
 
 module.exports = {
@@ -124,4 +41,3 @@ module.exports = {
     updateGroup,
     removeGroup
 }
-
