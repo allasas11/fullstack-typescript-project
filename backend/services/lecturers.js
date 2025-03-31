@@ -22,7 +22,6 @@ function saveLecturers(lecturers) {
 
 function getLecturersList() {
     const lecturers = getLecturers()
-    console.log('Fetched lecturers:', lecturers)
     return lecturers;
 }
 

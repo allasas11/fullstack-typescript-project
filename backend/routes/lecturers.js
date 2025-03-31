@@ -10,7 +10,6 @@ const router = express.Router()
 
 router.get('/lecturers', (req, res) => {
     const lecturers = getLecturersList()
-    console.log('Rendering lecturers:', lecturers)
 
     const data = {
         newLecturerButton: {

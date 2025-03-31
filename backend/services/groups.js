@@ -3,8 +3,39 @@ const { getDB } = require("../db")
 
 async function getGroups() {
     const db = getDB()
-    const groups = await db.collection('groups').find().toArray()
-    return groups
+    // const groups = await db
+    //                         .collection('groups')
+    //                         .find()
+    //                         .toArray()
+    // return groups
+
+    return await db 
+                    .collection('groups')
+                    .aggregate([
+                        {
+                            $match: { students:{ $exists: true,  $not: { $size: 0 } } }
+                        },
+                        {
+                            $lookup: {
+                                from: 'students',
+                                localField: 'students',
+                                foreignField: '_id',
+                                as: 'studentsData'
+                            }
+                        },
+                        {
+                            $addFields: {
+                                students: '$studentsData'
+                            }
+                        },
+                        {
+                            $project: {
+                                studentsData: 0,
+                                'students.groupId': 0
+                            }
+                        }
+                    ])
+                    .toArray()
 }
 
 async function getGroupById(id) {
