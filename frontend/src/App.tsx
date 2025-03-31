@@ -2,25 +2,19 @@ import { useEffect, useState } from "react"
 import { API_URL } from "./utils/config"
 
 interface Student {
+  _id: string;
   name: string
   surname: string
   age: number
   interests: string[]
-  id: string
 }
 
 
 interface Group {
-  id: string
+  _id: string
   name: string
   description: string
-  students: {
-    _id: string
-    name: string
-    surname: string
-    age: number
-    interests: string[]
-  }[]
+  students: Student[]
 }
 
 
@@ -56,7 +50,11 @@ function App() {
   const [groups, setGroups] = useState<Group[]>([])
   const [proglangs, setProglangs] = useState<ProgrammingLanguage[]>([])
   const [lecturers, setLecturers] = useState<Lecturer[]>([])
-  const [subjects, setSubjects] = useState<Subject[]>([]);
+  const [subjects, setSubjects] = useState<Subject[]>([])
+
+  const [selectedGroup, setSelectedGroup] = useState<Group | null>(null)
+  const [groupStudents, setGroupStudents] = useState<Student[]>([])
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,6 +66,7 @@ function App() {
 
         const groupsResponse = await fetch(`${API_URL}/groups`)
         const groupsData = await groupsResponse.json()
+        console.log("Fetched groups:", groupsData);
         setGroups(groupsData)
 
 
@@ -76,7 +75,7 @@ function App() {
           throw new Error(`Failed to fetch programming languages: ${proglangsResponse.status}`)
         }
         const proglangsData = await proglangsResponse.json()
-        setProglangs(proglangsData);
+        setProglangs(proglangsData)
 
 
         const lecturersResponse = await fetch(`${API_URL}/lecturers`)
@@ -101,6 +100,35 @@ function App() {
 
     fetchData()
   }, [])
+
+
+
+  const fetchGroupStudents = async (groupId: string | undefined) => {
+    if (!groupId) {
+      return
+    }
+
+
+    try {
+      const response = await fetch(`${API_URL}/groups/${groupId}/students`)
+      if (!response.ok) {
+        throw new Error(`Failed to fetch students for group: ${groupId}`)
+      }
+      const data = await response.json()
+      console.log("Fetched group data:", data)
+
+      setSelectedGroup(data)
+      setGroupStudents(data.students)
+    } catch (error) {
+      console.error("Error fetching group students:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+
+
+
   
   return (
 
@@ -111,39 +139,40 @@ function App() {
 
         <ol>
           {students.map(student => (
-            <a href={`/students/${student.id}`}>
-              <li key={student.id}>{student.name} {student.surname}, {student.age} y.</li>
-            </a>
+            <li key={student._id}>
+              <a href={`/students/${student._id}`}>
+                {student.name} {student.surname}, {student.age} y.
+              </a>
+            </li>
           ))}
         </ol>
       </div>
 
       <div>
-  <h2>Groups:</h2>
+        <h2>Groups:</h2>
+        <ul>
+          {groups.map((group) => (
+            <li key={group._id}>
+              <button onClick={() => group._id && fetchGroupStudents(group._id)}>
+                <strong>{group.name}</strong> - {group.description}
+              </button>
 
-  <ul>
-    {groups.map(group => (
-      <li key={group.id}>
-        <a href={`/groups/${group.id}`}>
-          <strong>{group.name}</strong> - {group.description}
-        </a>
+              {isLoading && <p>Loading students...</p>}
 
-        {group.students.length > 0 && (
-          <ul>
-            <h4>Students:</h4>
-            {group.students.map(student => (
-              <li key={student._id}>
-                {student.name} {student.surname}, {student.age} y.
-              </li>
-            ))}
-          </ul>
-        )}
-
-        {group.students.length === 0 && <p>No students in this group.</p>}
-      </li>
-    ))}
-  </ul>
-</div>
+              {selectedGroup && selectedGroup._id === group._id && (
+                <ul>
+                  <h4>Students:</h4>
+                  {groupStudents.map((student) => (
+                    <li key={student._id}>
+                      {student.name} {student.surname}, {student.age} y.
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
 
       <div>
         <h2>Programming Languages:</h2>
