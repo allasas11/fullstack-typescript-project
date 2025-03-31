@@ -1,6 +1,6 @@
 const express = require('express')
 
-const { getGroups, getGroupById, createGroup, updateGroup, removeGroup } = require('../services/groups')
+const { getGroups, getGroupById, createGroup, updateGroup, removeGroup, getStudentsByGroup } = require('../services/groups')
 
 const router = express.Router()
 
@@ -75,5 +75,17 @@ router.delete('/:id', async (req, res) => {
         res.status(500).send({ error: 'Internal server error' })
     }
 })
+
+
+router.get('/:id/students', async (req, res) => {
+    try {
+        const { id } = req.params
+        const data = await getStudentsByGroup(id)
+        res.send(data)
+    } catch (error) {
+        res.status(500).send({error})
+    }
+})
+
 
 module.exports = router
