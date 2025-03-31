@@ -14,7 +14,13 @@ interface Group {
   id: string
   name: string
   description: string
-  students: string[]
+  students: {
+    _id: string
+    name: string
+    surname: string
+    age: number
+    interests: string[]
+  }[]
 }
 
 
@@ -57,7 +63,6 @@ function App() {
       try {
         const response = await fetch(`${API_URL}/students`)
         const data = await response.json()
-        console.log(data)
         setStudents(data)
 
 
@@ -114,16 +119,31 @@ function App() {
       </div>
 
       <div>
-        <h2>Groups:</h2>
+  <h2>Groups:</h2>
 
-        <ul>
-          {groups.map(group => (
-            <a href={`/groups/${group.id}`} key={group.id}>
-              <li><strong>{group.name}</strong> - {group.description}</li>
-            </a>
-          ))}
-        </ul>
-      </div>
+  <ul>
+    {groups.map(group => (
+      <li key={group.id}>
+        <a href={`/groups/${group.id}`}>
+          <strong>{group.name}</strong> - {group.description}
+        </a>
+
+        {group.students.length > 0 && (
+          <ul>
+            <h4>Students:</h4>
+            {group.students.map(student => (
+              <li key={student._id}>
+                {student.name} {student.surname}, {student.age} y.
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {group.students.length === 0 && <p>No students in this group.</p>}
+      </li>
+    ))}
+  </ul>
+</div>
 
       <div>
         <h2>Programming Languages:</h2>
