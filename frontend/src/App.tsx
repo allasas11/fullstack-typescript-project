@@ -52,9 +52,10 @@ function App() {
   const [lecturers, setLecturers] = useState<Lecturer[]>([])
   const [subjects, setSubjects] = useState<Subject[]>([])
 
-  const [selectedGroup, setSelectedGroup] = useState<Group | null>(null)
   const [groupStudents, setGroupStudents] = useState<Student[]>([])
   const [isLoading, setIsLoading] = useState(false);
+
+  const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -103,11 +104,14 @@ function App() {
 
 
 
-  const fetchGroupStudents = async (groupId: string | undefined) => {
-    if (!groupId) {
+  const fetchGroupStudents = async (groupId: string ) => {
+    if (groupId === selectedGroupId) {
+      setSelectedGroupId(null)
+      setGroupStudents([])
       return
     }
 
+    setIsLoading(true)
 
     try {
       const response = await fetch(`${API_URL}/groups/${groupId}/students`)
@@ -115,9 +119,8 @@ function App() {
         throw new Error(`Failed to fetch students for group: ${groupId}`)
       }
       const data = await response.json()
-      console.log("Fetched group data:", data)
 
-      setSelectedGroup(data)
+      setSelectedGroupId(groupId)
       setGroupStudents(data.students)
     } catch (error) {
       console.error("Error fetching group students:", error)
@@ -129,7 +132,6 @@ function App() {
 
 
 
-  
   return (
 
     <>
@@ -153,13 +155,19 @@ function App() {
         <ul>
           {groups.map((group) => (
             <li key={group._id}>
-              <button onClick={() => group._id && fetchGroupStudents(group._id)}>
+              <button
+                onClick={() => fetchGroupStudents(group._id)}
+                style={{
+                  fontWeight: selectedGroupId === group._id ? "bold" : "normal",
+                  backgroundColor: selectedGroupId === group._id ? "#646cff" : "transparent",
+                }}
+              >
                 <strong>{group.name}</strong> - {group.description}
               </button>
 
               {isLoading && <p>Loading students...</p>}
 
-              {selectedGroup && selectedGroup._id === group._id && (
+              {selectedGroupId === group._id && (
                 <ul>
                   <h4>Students:</h4>
                   {groupStudents.map((student) => (
