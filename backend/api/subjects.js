@@ -1,83 +1,74 @@
 const express = require('express')
 const { getSubjects, getSubjectById, createSubject, updateSubject, removeSubject } = require('../services/subjects')
+
 const router = express.Router()
 
 
-router.get('/', (req, res) => {
-  try {
-    const subjects = getSubjects()
-    res.send(subjects)
-  } catch (error) {
-    console.error("Error fetching subjects:", error)
-    res.status(500).send({ message: "Internal Server Error" })
-  }
-})
-
-
-router.get('/:id', (req, res) => {
-  const { id } = req.params
-
-  try {
-    const subject = getSubjectById(id)
-
-    if (!subject) {
-      return res.status(404).send({ message: 'Subject not found' })
+router.get('/', async (req, res) => {
+    try {
+        const data = await getSubjects()
+        res.send(data)
+    } catch (error) {
+        res.status(500).send({ error })
     }
-
-    res.send(subject)
-  } catch (error) {
-    console.error("Error fetching subject:", error)
-    res.status(500).send({ message: "Internal Server Error" })
-  }
 })
 
 
-router.post('/', (req, res) => {
-  const { body } = req
+router.get('/:id', async (req, res) => {
+    const { id } = req.params
 
-  try {
-    if (!body.name || !body.description || !body.lecturerId) {
-      return res.status(400).send({ message: 'Name, description, and lecturerId are required fields' })
+    try {
+        const subject = await getSubjectById(id)
+        if (!subject) {
+            return res.status(404).send({ message: 'Subject not found' })
+        }
+        res.send(subject)
+    } catch (error) {
+        res.status(500).send({ error })
     }
-
-    const createdSubject = createSubject(body)
-    res.status(201).send(createdSubject)
-  } catch (error) {
-    console.error("Error creating subject:", error)
-    res.status(400).send({ message: error.message || "Bad Request" })
-  }
-})
+});
 
 
-router.put('/:id', (req, res) => {
-  const { id } = req.params
-  const { body } = req
+router.post('/', async (req, res) => {
+    const { body } = req
 
-  try {
-    const updatedSubject = updateSubject({ ...body, id })
-
-    if (!updatedSubject) {
-      return res.status(404).send({ message: 'Subject not found' })
+    try {
+        const response = await createSubject(body)
+        res.status(201).send(response)
+    } catch (error) {
+        res.status(500).send({ error })
     }
-
-    res.send(updatedSubject)
-  } catch (error) {
-    console.error("Error updating subject:", error)
-    res.status(400).send({ message: error.message || "Bad Request" })
-  }
 })
 
 
-router.delete('/:id', (req, res) => {
-  const { id } = req.params
+router.put('/:id', async (req, res) => {
+    const { id } = req.params
+    const { body } = req
 
-  try {
-    removeSubject(id)
-    res.send({ message: 'Subject was successfully removed', id })
-  } catch (error) {
-    console.error("Error deleting subject:", error)
-    res.status(500).send({ message: "Internal Server Error" })
-  }
+    try {
+        const response = await updateSubject(body, id)
+        if (response.matchedCount === 0) {
+            return res.status(404).send({ message: 'Subject not found' })
+        }
+        res.send({ message: 'Subject updated successfully', response })
+    } catch (error) {
+        res.status(500).send({ error })
+    }
+})
+
+
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params
+
+    try {
+        const response = await removeSubject(id)
+        if (response.deletedCount === 0) {
+            return res.status(404).send({ message: 'Subject not found' })
+        }
+        res.send({ message: 'Subject removed successfully', response })
+    } catch (error) {
+        res.status(500).send({ error })
+    }
 })
 
 module.exports = router

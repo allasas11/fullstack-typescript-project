@@ -1,83 +1,53 @@
-const { v4: uuid } = require('uuid')
-const path = require('path')
-const fs = require('fs')
+const { ObjectId } = require("mongodb")
+const { getDB } = require("../db")
 
-// FUNCTIONS //
 
-function getSubjects() {
-    const filePath = path.join('db', 'subjects.json')
-
-    if (!fs.existsSync(filePath)) {
-        throw new Error('File does not exist')
-    }
-
-    const fileContent = fs.readFileSync(filePath, 'utf-8')
-    return JSON.parse(fileContent)
+async function getSubjects() {
+    const db = getDB()
+    const subjects = await db
+                                .collection('subjects')
+                                .find()
+                                .toArray()
+    return subjects
 }
 
-function getSubjectById(id) {
-    const subjects = getSubjects()
-    return subjects.find(subject => subject.id === id)
+
+async function getSubjectById(id) {
+    const db = getDB()
+    const subject = await db
+                            .collection('subjects')
+                            .findOne({ _id: ObjectId.createFromHexString(id) })
+    return subject
 }
 
-function createSubject(body) {
-    const id = uuid()
 
-    const programmingLanguages = Array.isArray(body.programmingLanguages)
-        ? body.programmingLanguages
-        : body.programmingLanguages
-        ? [body.programmingLanguages]
-        : []
-
-    const newSubject = {
-        id,
-        name: body.name,
-        description: body.description,
-        programmingLanguages,
-        lecturerId: body.lecturerId
-    }
-
-    const subjects = getSubjects()
-    subjects.push(newSubject)
-
-    const filePath = path.join('db', 'subjects.json')
-    fs.writeFileSync(filePath, JSON.stringify(subjects, null, 2))
-
-    return newSubject
+async function createSubject(body) {
+    const db = getDB()
+    const response = await db
+                            .collection('subjects')
+                            .insertOne(body)
+    return response
 }
 
-function updateSubject(body) {
-    const { id, programmingLanguages: bodyProgrammingLanguages, ...rest } = body
 
-    const subjects = getSubjects()
-
-    const updatedSubjects = subjects.map(subject => {
-        if (subject.id === id) {
-            return {
-                ...subject,
-                ...rest,
-                programmingLanguages: Array.isArray(bodyProgrammingLanguages)
-                    ? bodyProgrammingLanguages
-                    : bodyProgrammingLanguages
-                    ? [bodyProgrammingLanguages]
-                    : []
-            }
-        }
-        return subject
-    })
-
-    const filePath = path.join('db', 'subjects.json')
-    fs.writeFileSync(filePath, JSON.stringify(updatedSubjects, null, 2))
-
-    return updatedSubjects.find(subject => subject.id === id)
+async function updateSubject(data, id) {
+    const db = getDB()
+    const response = await db
+                                .collection('subjects')
+                                .updateOne(
+                                    { _id: ObjectId.createFromHexString(id) },
+                                    { $set: data }
+                                )
+    return response
 }
 
-function removeSubject(id) {
-    const subjects = getSubjects()
-    const updatedSubjects = subjects.filter(subject => subject.id !== id)
 
-    const filePath = path.join('db', 'subjects.json')
-    fs.writeFileSync(filePath, JSON.stringify(updatedSubjects, null, 2))
+async function removeSubject(id) {
+    const db = getDB()
+    const response = await db
+                                .collection('subjects')
+                                .deleteOne({ _id: ObjectId.createFromHexString(id) })
+    return response
 }
 
 module.exports = {
@@ -87,5 +57,3 @@ module.exports = {
     updateSubject,
     removeSubject
 }
-
-

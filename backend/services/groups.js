@@ -118,7 +118,8 @@ async function getStudentsByGroup(id) {
                                     $project: {
                                         name: 1,
                                         surname: 1,
-                                        age: 1
+                                        age: 1,
+                                        interests: 1
                                     }
                                 }
                             ])
