@@ -25,6 +25,7 @@ interface ProgrammingLanguage {
   _id: string
   name: string
   description: string
+  students: Student[]
 }
 
 interface Lecturer {
@@ -32,8 +33,6 @@ interface Lecturer {
   name: string
   surname: string
   age: number
-  subjectIds: string[]
-  groupIds: string[]
 }
 
 
@@ -41,8 +40,7 @@ interface Subject {
   _id: string
   name: string
   description: string
-  programmingLanguages: string[]
-  lecturerId: string
+  lecturer: Lecturer
 }
 
 
@@ -216,19 +214,18 @@ function App() {
         <h2>Programming Languages:</h2>
 
         <ul>
-          {proglangs.map(proglang => (
+          {proglangs.map((proglang) => (
             <li key={proglang._id}>
               <a href={`/proglangs/${proglang._id}`}>
                 <strong>{proglang.name}</strong> - {proglang.description}
               </a>
-            
 
               {proglang.students.length > 0 && (
                 <ul>
                   <h4>Students Interested:</h4>
                   {proglang.students.map((student) => (
                     <li key={student._id}>
-                      {student.name} {student.surname}, {student.age} y.
+                      {student.name} {student.surname}.
                     </li>
                   ))}
                 </ul>
@@ -252,7 +249,6 @@ function App() {
         </ul>
       </div>
 
-
       <div>
         <h2>Subjects:</h2>
         <ul>
@@ -261,6 +257,13 @@ function App() {
               <a href={`/subjects/${subject._id}`}>
                 <strong>{subject.name}</strong> - {subject.description}
               </a>
+
+              {subject.lecturer && (
+              <p>
+                Lecturer: {subject.lecturer.name} {subject.lecturer.surname}.
+              </p>
+              )}
+
             </li>
           ))}
         </ul>
