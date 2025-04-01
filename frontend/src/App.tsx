@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { API_URL } from "./utils/config"
+import { BarLoader } from "react-spinners"
 
 interface Student {
   _id: string;
@@ -19,14 +20,14 @@ interface Group {
 
 
 interface ProgrammingLanguage {
-  id: string
+  _id: string
   name: string
   description: string
   students: string[]
 }
 
 interface Lecturer {
-  id: string
+  _id: string
   name: string
   surname: string
   age: number
@@ -36,7 +37,7 @@ interface Lecturer {
 
 
 interface Subject {
-  id: string
+  _id: string
   name: string
   description: string
   programmingLanguages: string[]
@@ -53,7 +54,7 @@ function App() {
   const [subjects, setSubjects] = useState<Subject[]>([])
 
   const [groupStudents, setGroupStudents] = useState<Student[]>([])
-  const [isLoading, setIsLoading] = useState(false);
+  const [loadingGroupId, setLoadingGroupId] = useState<string | null>(null);
 
   const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null)
 
@@ -111,7 +112,7 @@ function App() {
       return
     }
 
-    setIsLoading(true)
+    setLoadingGroupId(groupId)
 
     try {
       const response = await fetch(`${API_URL}/groups/${groupId}/students`)
@@ -125,7 +126,7 @@ function App() {
     } catch (error) {
       console.error("Error fetching group students:", error)
     } finally {
-      setIsLoading(false)
+      setLoadingGroupId(null)
     }
   }
 
@@ -165,7 +166,11 @@ function App() {
                 <strong>{group.name}</strong> - {group.description}
               </button>
 
-              {isLoading && <p>Loading students...</p>}
+              {loadingGroupId === group._id && (
+                <div style={{ display: 'flex', justifyContent: 'left', alignItems: 'center', height: '25px' }}>
+                  <BarLoader color="#646cff" loading={true} />
+                </div>
+              )}
 
               {selectedGroupId === group._id && (
                 <ul>
@@ -187,11 +192,11 @@ function App() {
 
         <ul>
           {proglangs.map(proglang => (
-            <a href={`/proglangs/${proglang.id}`} key={proglang.id}>
-              <li>
+            <li key={proglang._id}>
+              <a href={`/proglangs/${proglang._id}`}>
                 <strong>{proglang.name}</strong> - {proglang.description}
-              </li>
-            </a>
+              </a>
+            </li>
           ))}
         </ul>
       </div>
@@ -201,11 +206,11 @@ function App() {
 
         <ul>
           {lecturers.map(lecturer => (
-            <a href={`/lecturers/${lecturer.id}`} key={lecturer.id}>
-              <li>
+            <li key={lecturer._id}>
+              <a href={`/lecturers/${lecturer._id}`}>
                 <strong>{lecturer.name} {lecturer.surname}</strong> - Age: {lecturer.age}
-              </li>
-            </a>
+              </a>
+            </li>
           ))}
         </ul>
       </div>
@@ -213,14 +218,13 @@ function App() {
 
       <div>
         <h2>Subjects:</h2>
-
         <ul>
           {subjects.map(subject => (
-            <a href={`/subjects/${subject.id}`} key={subject.id}>
-              <li>
+            <li key={subject._id}>
+              <a href={`/subjects/${subject._id}`}>
                 <strong>{subject.name}</strong> - {subject.description}
-              </li>
-            </a>
+              </a>
+            </li>
           ))}
         </ul>
       </div>
