@@ -6,7 +6,6 @@ const { getDB } = require("../db")
 //GET
 async function getStudents() {
     const db = getDB()
-    // const students = await db.collection('students').find({age: { $gte: 25 }}).sort( {age: 1}).limit(5).toArray()
     const students = await db
                                 .collection('students')
                                 .aggregate([
@@ -20,7 +19,25 @@ async function getStudents() {
                                     },
                                     { 
                                         $unwind: '$group',
-                                    }
+                                    },
+                                    {
+                                        $lookup: {
+                                          from: "programminglanguages",
+                                          localField: "interests",
+                                          foreignField: "_id",
+                                          as: "detailedInterests",
+                                        },
+                                      },
+                                      {
+                                        $addFields: {
+                                          interests: "$detailedInterests"
+                                        }
+                                      },
+                                      {
+                                        $project: {
+                                          detailedInterests: 0
+                                        }
+                                      }
                                 ])
                                 .toArray()
 
@@ -32,7 +49,6 @@ async function getStudentById(id) {
     const db = getDB()
     const student = await db
                                 .collection('students')
-                                // .findOne({_id: ObjectId.createFromHexString(id)})
                                 .aggregate([
                                     {
                                         $match: {
@@ -49,7 +65,25 @@ async function getStudentById(id) {
                                     },
                                     { 
                                         $unwind: '$group',
-                                    }
+                                    },
+                                    {
+                                        $lookup: {
+                                          from: "programminglanguages",
+                                          localField: "interests",
+                                          foreignField: "_id",
+                                          as: "detailedInterests",
+                                        },
+                                      },
+                                      {
+                                        $addFields: {
+                                          interests: "$detailedInterests"
+                                        }
+                                      },
+                                      {
+                                        $project: {
+                                          detailedInterests: 0
+                                        }
+                                      }
                                 ])
                                 .next()
     return student

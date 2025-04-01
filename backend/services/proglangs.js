@@ -6,7 +6,27 @@ async function getProgrammingLanguages() {
     const db = getDB()
     const programmingLanguages = await db
                                             .collection('programminglanguages')
-                                            .find()
+                                            .aggregate([
+                                                {
+                                                  $lookup: {
+                                                    from: "students",
+                                                    localField: "students",
+                                                    foreignField: "_id",
+                                                    as: "studentDetails"
+                                                  }
+                                                },
+                                                {
+                                                    $addFields: {
+                                                      students: "$studentDetails"
+                                                    },
+                                                  },
+                                                  {
+                                                    $project: {
+                                                      studentDetails: 0,
+                                                      "students.groupId": 0,
+                                                    },
+                                                  },
+                                              ])
                                             .toArray()
     return programmingLanguages
 }
@@ -16,7 +36,31 @@ async function getProgrammingLanguageById(id) {
     const db = getDB()
     const programmingLanguage = await db
                                             .collection('programminglanguages')
-                                            .findOne({ _id: ObjectId.createFromHexString(id) })
+                                            .aggregate([
+                                                {
+                                                  $match: { _id: ObjectId.createFromHexString(id) }
+                                                },
+                                                {
+                                                  $lookup: {
+                                                    from: "students",
+                                                    localField: "students",
+                                                    foreignField: "_id",
+                                                    as: "studentDetails"
+                                                  }
+                                                },
+                                                {
+                                                  $addFields: {
+                                                    students: "$studentDetails"
+                                                  }
+                                                },
+                                                {
+                                                  $project: {
+                                                    studentDetails: 0,
+                                                    "students.groupId": 0,
+                                                  }
+                                                }
+                                              ])
+                                            .toArray()
     return programmingLanguage
 }
 
