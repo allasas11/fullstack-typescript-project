@@ -33,6 +33,8 @@ interface Lecturer {
   name: string
   surname: string
   age: number
+  subjects: Subject[]
+  groups: Group[]
 }
 
 
@@ -239,11 +241,37 @@ function App() {
         <h2>Lecturers:</h2>
 
         <ul>
-          {lecturers.map(lecturer => (
+          {lecturers.map((lecturer) => (
             <li key={lecturer._id}>
               <a href={`/lecturers/${lecturer._id}`}>
                 <strong>{lecturer.name} {lecturer.surname}</strong> - Age: {lecturer.age}
               </a>
+
+              {lecturer.subjects.length > 0 && (
+                <div>
+                  <h4>Subjects Taught:</h4>
+                  <ul>
+                    {lecturer.subjects.map((subject) => (
+                      <li key={subject._id}>
+                        {subject.name} - {subject.description}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {lecturer.groups.length > 0 && (
+                <div>
+                  <h4>Groups Assigned:</h4>
+                  <ul>
+                    {lecturer.groups.map((group) => (
+                      <li key={group._id}>
+                        {group.name} - {group.description}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </li>
           ))}
         </ul>
