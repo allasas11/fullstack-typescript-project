@@ -10,22 +10,28 @@ async function getProgrammingLanguages() {
                                                 {
                                                   $lookup: {
                                                     from: "students",
-                                                    localField: "students",
-                                                    foreignField: "_id",
-                                                    as: "studentDetails"
-                                                  }
+                                                    localField: "_id",
+                                                    foreignField: "interests",
+                                                    as: "interestedStudents",
+                                                  },
                                                 },
                                                 {
-                                                    $addFields: {
-                                                      students: "$studentDetails"
+                                                  $addFields: {
+                                                    students: "$interestedStudents",
+                                                  },
+                                                },
+                                                {
+                                                  $project: {
+                                                    name: 1,
+                                                    description: 1,
+                                                    students: {
+                                                      _id: 1,
+                                                      name: 1,
+                                                      surname: 1,
+                                                      age: 1,
                                                     },
                                                   },
-                                                  {
-                                                    $project: {
-                                                      studentDetails: 0,
-                                                      "students.groupId": 0,
-                                                    },
-                                                  },
+                                                },
                                               ])
                                             .toArray()
     return programmingLanguages
@@ -43,24 +49,30 @@ async function getProgrammingLanguageById(id) {
                                                 {
                                                   $lookup: {
                                                     from: "students",
-                                                    localField: "students",
-                                                    foreignField: "_id",
-                                                    as: "studentDetails"
-                                                  }
+                                                    localField: "_id",
+                                                    foreignField: "interests",
+                                                    as: "interestedStudents",
+                                                  },
                                                 },
                                                 {
                                                   $addFields: {
-                                                    students: "$studentDetails"
-                                                  }
+                                                    students: "$interestedStudents",
+                                                  },
                                                 },
                                                 {
                                                   $project: {
-                                                    studentDetails: 0,
-                                                    "students.groupId": 0,
-                                                  }
-                                                }
+                                                    name: 1,
+                                                    description: 1,
+                                                    students: {
+                                                      _id: 1,
+                                                      name: 1,
+                                                      surname: 1,
+                                                      age: 1,
+                                                    },
+                                                  },
+                                                },
                                               ])
-                                            .toArray()
+                                              .next()
     return programmingLanguage
 }
 
