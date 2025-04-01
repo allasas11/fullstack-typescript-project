@@ -6,7 +6,28 @@ async function getLecturers() {
     const db = getDB()
     const lecturers = await db
                                 .collection('lecturers')
-                                .find()
+                                .aggregate([
+                                    {
+                                      $lookup: {
+                                        from: "subjects",
+                                        localField: "_id",
+                                        foreignField: "lecturerId",
+                                        as: "subjects",
+                                      },
+                                    },
+                                    {
+                                      $project: {
+                                        name: 1,
+                                        surname: 1,
+                                        age: 1,
+                                        subjects: {
+                                          _id: 1,
+                                          name: 1,
+                                          description: 1,
+                                        },
+                                      },
+                                    },
+                                  ])
                                 .toArray()
     return lecturers
 }

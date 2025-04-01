@@ -6,7 +6,31 @@ async function getSubjects() {
     const db = getDB()
     const subjects = await db
                                 .collection('subjects')
-                                .find()
+                                .aggregate([
+                                    {
+                                      $lookup: {
+                                        from: "lecturers",
+                                        localField: "lecturerId",
+                                        foreignField: "_id",
+                                        as: "lecturer",
+                                      },
+                                    },
+                                    {
+                                      $unwind: "$lecturer", 
+                                    },
+                                    {
+                                      $project: {
+                                        name: 1,
+                                        description: 1,
+                                        lecturer: {
+                                          _id: 1,
+                                          name: 1,
+                                          surname: 1,
+                                          age: 1,
+                                        },
+                                      },
+                                    },
+                                  ])
                                 .toArray()
     return subjects
 }
@@ -16,7 +40,35 @@ async function getSubjectById(id) {
     const db = getDB()
     const subject = await db
                             .collection('subjects')
-                            .findOne({ _id: ObjectId.createFromHexString(id) })
+                            .aggregate([
+                                {
+                                  $match: { _id: ObjectId.createFromHexString(id) },
+                                },
+                                {
+                                  $lookup: {
+                                    from: "lecturers",
+                                    localField: "lecturerId",
+                                    foreignField: "_id",
+                                    as: "lecturer",
+                                  },
+                                },
+                                {
+                                  $unwind: "$lecturer",
+                                },
+                                {
+                                  $project: {
+                                    name: 1,
+                                    description: 1,
+                                    lecturer: {
+                                      _id: 1,
+                                      name: 1,
+                                      surname: 1,
+                                      age: 1,
+                                    },
+                                  },
+                                },
+                            ])
+                            .next()
     return subject
 }
 
