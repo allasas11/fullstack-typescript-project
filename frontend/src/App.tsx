@@ -7,7 +7,9 @@ interface Student {
   name: string
   surname: string
   age: number
-  interests: string[]
+  interests: ProgrammingLanguage[]
+  groupId: string;
+  group: Group
 }
 
 
@@ -23,7 +25,6 @@ interface ProgrammingLanguage {
   _id: string
   name: string
   description: string
-  students: string[]
 }
 
 interface Lecturer {
@@ -62,13 +63,16 @@ function App() {
     const fetchData = async () => {
       try {
         const response = await fetch(`${API_URL}/students`)
+        if (!response.ok) {
+          throw new Error("Failed to fetch students")
+        }
         const data = await response.json()
         setStudents(data)
 
 
         const groupsResponse = await fetch(`${API_URL}/groups`)
         const groupsData = await groupsResponse.json()
-        console.log("Fetched groups:", groupsData);
+        console.log("Fetched groups:", groupsData)
         setGroups(groupsData)
 
 
@@ -143,9 +147,30 @@ function App() {
         <ol>
           {students.map(student => (
             <li key={student._id}>
+
               <a href={`/students/${student._id}`}>
                 {student.name} {student.surname}, {student.age} y.
               </a>
+
+              <p>
+                Group: <em>{student.group?.name || "No group assigned"}</em>
+              </p>
+
+              {student.interests.length > 0 ? (
+                <div>
+                  <p>Interests:</p>
+                  <ul>
+                    {student.interests.map((language) => (
+                      <li key={language._id}>
+                        {language.name}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : (
+                <p>No programming language interests.</p>
+              )}
+
             </li>
           ))}
         </ol>
@@ -196,6 +221,18 @@ function App() {
               <a href={`/proglangs/${proglang._id}`}>
                 <strong>{proglang.name}</strong> - {proglang.description}
               </a>
+            
+
+              {proglang.students.length > 0 && (
+                <ul>
+                  <h4>Students Interested:</h4>
+                  {proglang.students.map((student) => (
+                    <li key={student._id}>
+                      {student.name} {student.surname}, {student.age} y.
+                    </li>
+                  ))}
+                </ul>
+              )}
             </li>
           ))}
         </ul>
