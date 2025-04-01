@@ -16,17 +16,30 @@ async function getLecturers() {
                                       },
                                     },
                                     {
-                                      $project: {
-                                        name: 1,
-                                        surname: 1,
-                                        age: 1,
-                                        subjects: {
-                                          _id: 1,
-                                          name: 1,
-                                          description: 1,
+                                        $lookup: {
+                                          from: "groups",
+                                          localField: "_id",
+                                          foreignField: "lecturerId",
+                                          as: "groups",
                                         },
                                       },
-                                    },
+                                      {
+                                        $project: {
+                                          name: 1,
+                                          surname: 1,
+                                          age: 1,
+                                          subjects: {
+                                            _id: 1,
+                                            name: 1,
+                                            description: 1,
+                                          },
+                                          groups: {
+                                            _id: 1,
+                                            name: 1,
+                                            description: 1,
+                                          },
+                                        },
+                                      },
                                   ])
                                 .toArray()
     return lecturers
@@ -37,7 +50,45 @@ async function getLecturerById(id) {
     const db = getDB()
     const lecturer = await db
                                 .collection('lecturers')
-                                .findOne({ _id: ObjectId.createFromHexString(id) })
+                                .aggregate([
+                                    {
+                                      $match: { _id: ObjectId.createFromHexString(id) },
+                                    },
+                                    {
+                                      $lookup: {
+                                        from: "subjects",
+                                        localField: "_id",
+                                        foreignField: "lecturerId",
+                                        as: "subjects",
+                                      },
+                                    },
+                                    {
+                                      $lookup: {
+                                        from: "groups",
+                                        localField: "_id",
+                                        foreignField: "lecturerId",
+                                        as: "groups",
+                                      },
+                                    },
+                                    {
+                                      $project: {
+                                        name: 1,
+                                        surname: 1,
+                                        age: 1,
+                                        subjects: {
+                                          _id: 1,
+                                          name: 1,
+                                          description: 1,
+                                        },
+                                        groups: {
+                                          _id: 1,
+                                          name: 1,
+                                          description: 1,
+                                        },
+                                      },
+                                    },
+                                  ])
+                                  .next()
     return lecturer
 }
 
