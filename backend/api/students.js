@@ -1,10 +1,11 @@
 const express = require('express')
 
-const { getStudents, getStudentById, createStudent, updateStudent, removeStudent, getStudentsBy } = require('../services/students')
+const { getStudents, getStudentById, createStudent, updateStudent, removeStudent, getStudentsBy, getStudentGroups } = require('../services/students')
 
 const router = express.Router()
 
 // API //
+
 
 router.get('/', async (req, res) => {
     try {
@@ -64,6 +65,16 @@ router.delete('/:id', async (req, res) => {
     }
 })
 
+router.get('/:studentId/groups', async (req, res) => {
+    const { studentId } = req.params  
+    try {
+      const groups = await getStudentGroups(studentId)
+      res.send(groups)
+    } catch (error) {
+      res.status(500).send({ error })
+    }
+  })
+
 router.get('/:key/:value', async (req, res) => {
     const { key, value } = req.params
 
@@ -76,6 +87,7 @@ router.get('/:key/:value', async (req, res) => {
     }
 
 })
+
 
 
 module.exports = router

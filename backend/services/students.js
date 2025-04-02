@@ -118,7 +118,6 @@ async function removeStudent(id) {
     
 }
 
-
 // Function for filtering using link - dynamic filtering mechanism
 async function getStudentsBy(key, value) {
     const db = getDB()
@@ -134,11 +133,38 @@ async function getStudentsBy(key, value) {
         }
     
 
-        const res = await db.collection('students').find({ [key]: queryValue }).toArray()
+        const res = await db
+                            .collection('students')
+                            .find({ [key]: queryValue })
+                            .toArray()
 
     return res 
 }
 
+async function getStudentGroups(studentId) {
+  const db = getDB()
+
+
+  const groups = await db
+    .collection("groups")
+    .aggregate([
+      {
+        $match: {
+          students: ObjectId.createFromHexString(studentId)
+        }
+      },
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          description: 1,
+        },
+      },
+    ])
+    .toArray()
+
+  return groups
+}
 
 module.exports = {
     getStudents,
@@ -146,5 +172,6 @@ module.exports = {
     createStudent,
     updateStudent,
     removeStudent,
-    getStudentsBy
+    getStudentsBy,
+    getStudentGroups
 }
