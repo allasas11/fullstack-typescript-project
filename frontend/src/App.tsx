@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { API_URL } from "./utils/config"
 import { BarLoader } from "react-spinners"
+import axios from "axios";
 
 interface Student {
   _id: string;
@@ -55,9 +56,12 @@ function App() {
   const [subjects, setSubjects] = useState<Subject[]>([])
 
   const [groupStudents, setGroupStudents] = useState<Student[]>([])
-  const [loadingGroupId, setLoadingGroupId] = useState<string | null>(null);
-
+  const [loadingGroupId, setLoadingGroupId] = useState<string | null>(null)
   const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null)
+
+  const [studentGroups, setStudentGroups] = useState<Group[]>([])
+  const [loadingStudentId, setLoadingStudentId] = useState<string | null>(null)
+  const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -135,6 +139,27 @@ function App() {
   }
 
 
+  const fetchStudentGroups = async (studentId: string) => {
+    if (studentId === selectedStudentId) {
+      setSelectedStudentId(null)
+      setStudentGroups([])
+      return
+    }
+
+    setLoadingStudentId(studentId)
+
+    try {
+      const response = await axios.get(`${API_URL}/students/${studentId}/groups`)
+      setStudentGroups(response.data)
+      setSelectedStudentId(studentId)
+    } catch (error) {
+      console.error(`Error fetching groups for student ${studentId}:`, error)
+    } finally {
+      setLoadingStudentId(null)
+    }
+  }
+
+
 
 
   return (
@@ -170,6 +195,30 @@ function App() {
               ) : (
                 <p>No programming language interests.</p>
               )}
+
+              <button
+                onClick={() => fetchStudentGroups(student._id)}
+                disabled={loadingStudentId === student._id}
+              >
+                {loadingStudentId === student._id
+                  ? "Loading..."
+                  : selectedStudentId === student._id
+                  ? "Hide Groups"
+                  : "View Groups"}
+              </button>
+
+              {selectedStudentId === student._id && studentGroups.length > 0 && (
+              <div>
+                <h4>Groups:</h4>
+                <ul>
+                  {studentGroups.map((group) => (
+                    <li key={group._id}>
+                      <strong>{group.name}</strong>: {group.description}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             </li>
           ))}
