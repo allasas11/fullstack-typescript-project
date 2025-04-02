@@ -166,6 +166,101 @@ async function getStudentGroups(studentId) {
   return groups
 }
 
+async function getStudentLecturers(studentId) {
+  const db = getDB();
+
+  const lecturer = await db
+    .collection("students")
+    .aggregate([
+      {
+        $match: {
+          _id: ObjectId.createFromHexString(studentId)
+        }
+      },
+      {
+        $lookup: {
+          from: "groups",
+          localField: "groupId",
+          foreignField: "_id",
+          as: "group"
+        }
+      },
+      {
+        $unwind: "$group",
+      },
+      {
+        $lookup: {
+          from: "lecturers",
+          localField: "group.lecturerId",
+          foreignField: "_id",
+          as: "lecturer",
+        },
+      },
+      {
+        $unwind: "$lecturer",
+      },
+      {
+        $project: {
+          _id: "$lecturer._id",
+          name: "$lecturer.name",
+          surname: "$lecturer.surname",
+          age: "$lecturer.age",
+        },
+      },
+    ])
+    .next()
+
+  if (!lecturer) {
+    throw new Error("Lecturer not found")
+  }
+
+  return lecturer;
+}
+
+async function getStudentSubjects(studentId) {
+  const db = getDB()
+
+  const subjects = await db
+    .collection("students")
+    .aggregate([
+      { $match: { _id: ObjectId.createFromHexString(studentId) } },
+      {
+        $lookup: {
+          from: "groups",
+          localField: "groupId",
+          foreignField: "_id",
+          as: "group"
+        }
+      },
+      { 
+        $unwind: "$group" 
+      },
+      {
+        $lookup: {
+          from: "subjects",
+          localField: "group.lecturerId",
+          foreignField: "lecturerId",
+          as: "subjects"
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          subjects: {
+            _id: 1,
+            name: 1,
+            description: 1,
+          },
+        },
+      },
+    ])
+    .next()
+
+  return subjects
+}
+
+
+
 module.exports = {
     getStudents,
     getStudentById,
@@ -173,5 +268,7 @@ module.exports = {
     updateStudent,
     removeStudent,
     getStudentsBy,
-    getStudentGroups
+    getStudentGroups,
+    getStudentLecturers,
+    getStudentSubjects
 }

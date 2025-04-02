@@ -1,6 +1,6 @@
 const express = require('express')
 
-const { getStudents, getStudentById, createStudent, updateStudent, removeStudent, getStudentsBy, getStudentGroups } = require('../services/students')
+const { getStudents, getStudentById, createStudent, updateStudent, removeStudent, getStudentsBy, getStudentGroups, getStudentLecturers, getStudentSubjects } = require('../services/students')
 
 const router = express.Router()
 
@@ -74,6 +74,30 @@ router.get('/:studentId/groups', async (req, res) => {
       res.status(500).send({ error })
     }
   })
+
+router.get('/:studentId/lecturers', async (req, res) => {
+    const { studentId } = req.params
+  
+    try {
+        const lecturers = await getStudentLecturers(studentId)
+        res.send(lecturers)
+    } catch (error) {
+        console.error("Error fetching student lecturers:", error)
+        res.status(500).send({ error: error.message })
+    }
+  })
+
+router.get('/:studentId/subjects', async (req, res) => {
+const { studentId } = req.params
+
+try {
+    const subjects = await getStudentSubjects(studentId)
+    res.send(subjects)
+} catch (error) {
+    console.error("Error fetching student subjects:", error)
+    res.status(500).send({ error: error.message })
+}
+})
 
 router.get('/:key/:value', async (req, res) => {
     const { key, value } = req.params
