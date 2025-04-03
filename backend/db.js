@@ -1,28 +1,21 @@
-const { MongoClient } = require('mongodb')
+const mongoose = require('mongoose')
 const process = require('process')
 
-const client = new MongoClient(process.env.DB_URI)
-
-let db
-
-async function connectToDB() {
+async function connectToDb() {
     try {
-        await client.connect()
-        db = client.db(process.env.DB_NAME)
-        console.log('Connected to MongoDB')
-    } catch(error) {
-        console.error('Error connecting to MongoDB: ', error)
-        process.exit(1)
-    }
-}
+        await mongoose.connect(process.env.DB_URI)
+        console.log('MongoDB connected')
 
-function getDB() {
-    if(!db) {
-        throw new Error('Database is not initialized')
+    } catch (error) {
+        console.log('Failed to connect to MongoDB:', error)
     }
 
-    return db
+    process.on('SIGINT', () => {
+        mongoose.connection.close(() => {
+            console.log('MongoDB disconnected')
+            process.exit(0)
+        })
+    })
 }
 
-module.exports = { connectToDB, getDB } 
-
+connectToDb()

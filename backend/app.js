@@ -1,7 +1,9 @@
 require('dotenv').config()
+require('./db')
 
 const express = require('express')
 const path = require('path')
+
 const process = require('process')
 
 var pluralize = require('pluralize')
@@ -33,7 +35,7 @@ const groupsRoutes = require('./routes/groups')
 const proglangsRouter = require('./routes/proglangs')
 const lecturersRouter = require('./routes/lecturers')
 const subjectsRouter = require('./routes/subjects')
-const { connectToDB } = require('./db')
+
 
 
 // API routes //
@@ -67,14 +69,6 @@ app.get('/', (req, res) => {
 })
 
 
-
-
 const PORT = process.env.PORT || 3000
 
-connectToDB()
-    .then(() => {
-        app.listen(PORT, () => console.log(`Server is running on ${PORT}.`))
-    })
-    .catch(error => {
-        console.error('Failed to connect to MongoDB: ', error)
-    })
+app.listen(PORT, () => console.log(`Server is running on ${PORT}.`))
