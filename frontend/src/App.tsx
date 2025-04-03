@@ -43,7 +43,7 @@ interface Subject {
   _id: string
   name: string
   description: string
-  lecturer: Lecturer
+  programmingLanguages: ProgrammingLanguage[]
 }
 
 
@@ -334,12 +334,14 @@ function App() {
               <a href={`/subjects/${subject._id}`}>
                 <strong>{subject.name}</strong> - {subject.description}
               </a>
-
-              {subject.lecturer && (
-              <p>
-                Lecturer: {subject.lecturer.name} {subject.lecturer.surname}.
-              </p>
-              )}
+              <p>Programming Languages:</p>
+              <ul>
+                {subject.programmingLanguages.map((language) => (
+                  <li key={language._id}>
+                    {language.name}
+                  </li>
+                ))}
+              </ul>
 
             </li>
           ))}
