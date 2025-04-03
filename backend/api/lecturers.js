@@ -1,5 +1,5 @@
 const express = require('express')
-const { getLecturers, getLecturerById, createLecturer, updateLecturer, removeLecturer } = require('../services/lecturers')
+const { getLecturers, getLecturerById, createLecturer, updateLecturer, removeLecturer, getGroupsByLecturer, getStudentsByLecturer, getSubjectsByLecturer } = require('../services/lecturers')
 
 const router = express.Router()
 
@@ -70,5 +70,59 @@ router.delete('/:id', async (req, res) => {
         res.status(500).send({ error })
     }
 })
+
+router.get("/:lector/groups", async (req, res) => {
+    try {
+      const { lector } = req.params
+      const groups = await getGroupsByLecturer(lector)
+  
+      if (groups.length === 0) {
+        return res.status(404).send({ message: "No groups found for this lecturer." })
+      }
+  
+      res.send(groups)
+
+    } catch (error) {
+      console.error("Error fetching groups:", error)
+      res.status(500).send({ error: error.message })
+    }
+  })
+
+router.get("/:lector/students", async (req, res) => {
+try {
+    const { lector } = req.params
+    const students = await getStudentsByLecturer(lector)
+
+    if (students.length === 0) {
+    return res.status(404).send({ message: "No students found for this lecturer." })
+    }
+
+    res.send(students)
+
+} catch (error) {
+    console.error("Error fetching students:", error)
+    res.status(500).send({ error: error.message })
+}
+})
+
+
+router.get("/:lector/subjects", async (req, res) => {
+    try {
+      const { lector } = req.params
+      const subjects = await getSubjectsByLecturer(lector)
+  
+      if (subjects.length === 0) {
+        return res.status(404).send({ message: "No subjects found for this lecturer." })
+      }
+  
+      res.send(subjects)
+
+    } catch (error) {
+      console.error("Error fetching subjects:", error)
+      res.status(500).send({ error: error.message })
+    }
+  })
+
+
 
 module.exports = router
