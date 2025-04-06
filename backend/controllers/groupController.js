@@ -3,6 +3,8 @@ const Group = require('../models/groupModel')
 const getGroups = async (req, res) => {
   try {
     const groups = await Group.find()
+      .populate('students')
+      .populate('lecturerId')
     res.send(groups)
   } catch (error) {
     res.status(500).send(error)
@@ -14,6 +16,8 @@ const getGroupById = async (req, res) => {
   try {
     const { id } = req.params
     const group = await Group.findById(id)
+      .populate('students')
+      .populate('lecturerId')
 
     if (!group) {
       return res.status(404).send({ error: 'Group not found' })
@@ -50,8 +54,15 @@ const updateGroup = async (req, res) => {
       return res.status(404).send({ error: 'Group not found' })
     }
 
-    res.send(updatedGroup)
+    const populatedGroup = await Group.findById(updatedGroup._id)
+      .populate('students')
+      .populate('lecturerId')
+
+    res.send(populatedGroup)
   } catch (error) {
+    if (error.name === 'ValidationError') {
+      return res.status(400).send({ error: error.message })
+    }
     res.status(500).send(error)
   }
 }

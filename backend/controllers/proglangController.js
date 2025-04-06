@@ -41,7 +41,7 @@ const updateProglang = async (req, res) => {
     const updatedProglang = await Proglang.findByIdAndUpdate(
       id,
       req.body,
-      { new: true } 
+      { new: true, runValidators: true } 
     )
 
     if (!updatedProglang) {
@@ -50,6 +50,9 @@ const updateProglang = async (req, res) => {
 
     res.send(updatedProglang);
   } catch (error) {
+    if (error.name === 'ValidationError') {
+      return res.status(400).send({ error: error.message })
+    }
     res.status(500).send(error);
   }
 }

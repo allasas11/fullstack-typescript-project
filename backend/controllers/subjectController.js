@@ -3,6 +3,7 @@ const Subject = require('../models/subjectModel')
 const getSubjects = async (req, res) => {
   try {
     const subjects = await Subject.find()
+      .populate('proglangs')
     res.send(subjects)
   } catch (error) {
     res.status(500).send(error)
@@ -13,6 +14,7 @@ const getSubjectById = async (req, res) => {
   try {
     const { id } = req.params
     const subject = await Subject.findById(id)
+      .populate('proglangs')
 
     if (!subject) {
       return res.status(404).send({ error: 'Subject not found' })
@@ -41,16 +43,22 @@ const updateSubject = async (req, res) => {
     const updatedSubject = await Subject.findByIdAndUpdate(
       id,
       req.body,
-      { new: true } // Return the updated document
+      { new: true, runValidators: true }
     )
 
     if (!updatedSubject) {
       return res.status(404).send({ error: 'Subject not found' });
     }
 
-    res.send(updatedSubject);
+    const populatedSubject = await Subject.findById(updatedSubject._id)
+      .populate('proglangs')
+
+    res.send(populatedSubject)
   } catch (error) {
-    res.status(500).send(error);
+    if (error.name === 'ValidationError') {
+      return res.status(400).send({ error: error.message })
+    }
+    res.status(500).send(error)
   }
 }
 
