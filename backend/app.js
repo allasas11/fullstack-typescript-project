@@ -25,6 +25,8 @@ const groupsApiRoutes = require('./api/groups')
 const proglangsApiRoutes = require('./api/proglangs')
 const lecturersApiRoutes = require('./api/lecturers')
 const subjectsApiRoutes = require('./api/subjects')
+const userApiRoutes = require('./api/users')
+
 
 
 // Routes 
@@ -43,6 +45,7 @@ app.use('/api/groups', groupsApiRoutes)
 app.use('/api/proglangs', proglangsApiRoutes)
 app.use('/api/lecturers', lecturersApiRoutes)
 app.use('/api/subjects', subjectsApiRoutes)
+app.use('/api/users', userApiRoutes)
 
 // Routes 
 
