@@ -16,8 +16,8 @@ const subjectSchema = new mongoose.Schema({
       minlength: 10,
   },
   proglangs: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Proglang'
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Proglang'
   }]
 }, { timestamps: true })
 

@@ -3,7 +3,11 @@ const Subject = require('../models/subjectModel')
 const getSubjects = async (req, res) => {
   try {
     const subjects = await Subject.find()
-      .populate('proglangs')
+    .populate({
+      path: 'proglangs',
+      model: 'Proglang',
+      options: { strictPopulate: false }
+    })
     res.send(subjects)
   } catch (error) {
     res.status(500).send(error)

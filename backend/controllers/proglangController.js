@@ -3,6 +3,7 @@ const Proglang = require('../models/proglangModel')
 const getProglangs = async (req, res) => {
   try {
     const proglangs = await Proglang.find()
+      .populate('students')
     res.send(proglangs)
   } catch (error) {
     res.status(500).send(error)
@@ -13,6 +14,7 @@ const getProglangById = async (req, res) => {
   try {
     const { id } = req.params
     const proglang = await Proglang.findById(id)
+      .populate('students')
 
     if (!proglang) {
       return res.status(404).send({ error: 'Programming language not found' })

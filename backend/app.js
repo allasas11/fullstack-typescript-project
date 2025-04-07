@@ -6,9 +6,7 @@ const path = require('path')
 
 const process = require('process')
 
-var pluralize = require('pluralize')
-console.log(pluralize('group'))
-
+var pluralize = require('pluralize') // eslint-disable-line no-unused-vars
 
 const bodyParser = require('body-parser')
 const cors = require('cors')

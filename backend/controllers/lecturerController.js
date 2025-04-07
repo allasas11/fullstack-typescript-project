@@ -4,7 +4,8 @@ const Lecturer = require('../models/lecturerModel')
 const getLecturers = async (req, res) => {
   try {
     const lecturers = await Lecturer.find()
-      .populate('subjects') 
+      .populate('subjects')
+      .populate('groups')
     res.send(lecturers)
   } catch (error) {
     res.status(500).send(error)
@@ -16,7 +17,8 @@ const getLecturerById = async (req, res) => {
   try {
     const { id } = req.params
     const lecturer = await Lecturer.findById(id)
-      .populate('subjects') 
+      .populate('subjects')
+      .populate('groups')
 
     if (!lecturer) {
       return res.status(404).send({ error: 'Lecturer not found' })
@@ -57,6 +59,7 @@ const updateLecturer = async (req, res) => {
 
     const populatedLecturer = await Lecturer.findById(updatedLecturer._id)
       .populate('subjects')
+      .populate('groups')
 
     res.send(populatedLecturer)
   } catch (error) {

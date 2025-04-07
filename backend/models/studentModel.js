@@ -1,19 +1,19 @@
-const mongoose = require('mongoose')
+const mongoose = require ('mongoose')
 
 const studentSchema = new mongoose.Schema({
     name: {
       type: String,
       required: true,
       trim: true,
-      minLength: [2],
-      maxLength: [50]
+      minLength: 2,
+      maxLength: 50
     },
     surname: {
       type: String,
       required: true,
       trim: true,
-      minLength: [2],
-      maxLength: [50]
+      minLength: 2,
+      maxLength: 50
     },
     age: {
       type: Number,
