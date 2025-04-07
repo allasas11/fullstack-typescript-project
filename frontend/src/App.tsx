@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { API_URL } from "./utils/config"
-import { BarLoader } from "react-spinners"
-import axios from "axios";
+import { BarLoader } from "react-spinners";
+
 
 interface Student {
   _id: string;
@@ -9,8 +9,7 @@ interface Student {
   surname: string
   age: number
   interests: ProgrammingLanguage[]
-  groupId: string;
-  group: Group
+  groupId?: Group
 }
 
 
@@ -43,7 +42,7 @@ interface Subject {
   _id: string
   name: string
   description: string
-  programmingLanguages: ProgrammingLanguage[]
+  proglangs: ProgrammingLanguage[]
 }
 
 
@@ -55,28 +54,30 @@ function App() {
   const [lecturers, setLecturers] = useState<Lecturer[]>([])
   const [subjects, setSubjects] = useState<Subject[]>([])
 
-  const [groupStudents, setGroupStudents] = useState<Student[]>([])
-  const [loadingGroupId, setLoadingGroupId] = useState<string | null>(null)
-  const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null)
 
-  const [studentGroups, setStudentGroups] = useState<Group[]>([])
-  const [loadingStudentId, setLoadingStudentId] = useState<string | null>(null)
-  const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null)
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string | null>(null)
+
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${API_URL}/students`)
-        if (!response.ok) {
+
+        setLoading(true)
+
+        const studentsResponse = await fetch(`${API_URL}/students`)
+        if (!studentsResponse.ok) {
           throw new Error("Failed to fetch students")
         }
-        const data = await response.json()
+        const data = await studentsResponse.json()
         setStudents(data)
 
 
         const groupsResponse = await fetch(`${API_URL}/groups`)
+        if (!groupsResponse.ok) {
+          throw new Error("Failed to fetch groups")
+        }
         const groupsData = await groupsResponse.json()
-        console.log("Fetched groups:", groupsData)
         setGroups(groupsData)
 
 
@@ -103,8 +104,11 @@ function App() {
         const subjectsData = await subjectsResponse.json()
         setSubjects(subjectsData)
 
-      } catch (error) {
-        console.error("Error fetching students:", error)
+        setLoading(false)
+      } catch (err) {
+        console.error("Error fetching students:", (err as Error).message)
+        setError((err as Error).message || "An error occurred while fetching data.")
+        setLoading(false)
       }
     }
 
@@ -113,52 +117,17 @@ function App() {
 
 
 
-  const fetchGroupStudents = async (groupId: string ) => {
-    if (groupId === selectedGroupId) {
-      setSelectedGroupId(null)
-      setGroupStudents([])
-      return
+    if (loading) {
+      return (
+        <div style={{ textAlign: "center", marginTop: "50px" }}>
+          <BarLoader color="#646cff" loading={true} />
+        </div>
+      );
     }
-
-    setLoadingGroupId(groupId)
-
-    try {
-      const response = await fetch(`${API_URL}/groups/${groupId}/students`)
-      if (!response.ok) {
-        throw new Error(`Failed to fetch students for group: ${groupId}`)
-      }
-      const data = await response.json()
-
-      setSelectedGroupId(groupId)
-      setGroupStudents(data.students)
-    } catch (error) {
-      console.error("Error fetching group students:", error)
-    } finally {
-      setLoadingGroupId(null)
+  
+    if (error) {
+      return <div style={{ textAlign: "center", color: "red" }}>{error}</div>;
     }
-  }
-
-
-  const fetchStudentGroups = async (studentId: string) => {
-    if (studentId === selectedStudentId) {
-      setSelectedStudentId(null)
-      setStudentGroups([])
-      return
-    }
-
-    setLoadingStudentId(studentId)
-
-    try {
-      const response = await axios.get(`${API_URL}/students/${studentId}/groups`)
-      setStudentGroups(response.data)
-      setSelectedStudentId(studentId)
-    } catch (error) {
-      console.error(`Error fetching groups for student ${studentId}:`, error)
-    } finally {
-      setLoadingStudentId(null)
-    }
-  }
-
 
 
 
@@ -166,7 +135,7 @@ function App() {
 
     <>
 
-      <div>
+      <section>
         <h2>Students:</h2>
 
         <ol>
@@ -178,7 +147,7 @@ function App() {
               </a>
 
               <p>
-                Group: <em>{student.group?.name || "No group assigned"}</em>
+                Group: <em>{student.groupId?.name || "No group assigned"}</em>
               </p>
 
               {student.interests.length > 0 ? (
@@ -196,72 +165,41 @@ function App() {
                 <p>No programming language interests.</p>
               )}
 
-              <button
-                onClick={() => fetchStudentGroups(student._id)}
-                disabled={loadingStudentId === student._id}
-              >
-                {loadingStudentId === student._id
-                  ? "Loading..."
-                  : selectedStudentId === student._id
-                  ? "Hide Groups"
-                  : "View Groups"}
-              </button>
-
-              {selectedStudentId === student._id && studentGroups.length > 0 && (
-              <div>
-                <h4>Groups:</h4>
-                <ul>
-                  {studentGroups.map((group) => (
-                    <li key={group._id}>
-                      <strong>{group.name}</strong>: {group.description}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
             </li>
           ))}
         </ol>
-      </div>
+      </section>
 
-      <div>
+      <section>
         <h2>Groups:</h2>
         <ul>
           {groups.map((group) => (
             <li key={group._id}>
-              <button
-                onClick={() => fetchGroupStudents(group._id)}
-                style={{
-                  fontWeight: selectedGroupId === group._id ? "bold" : "normal",
-                  backgroundColor: selectedGroupId === group._id ? "#646cff" : "transparent",
-                }}
-              >
+
+              <a href={`/groups/${group._id}`}>
                 <strong>{group.name}</strong> - {group.description}
-              </button>
+              </a>
 
-              {loadingGroupId === group._id && (
-                <div style={{ display: 'flex', justifyContent: 'left', alignItems: 'center', height: '25px' }}>
-                  <BarLoader color="#646cff" loading={true} />
-                </div>
-              )}
-
-              {selectedGroupId === group._id && (
-                <ul>
+              {group.students.length > 0 ? (
+                <div>
                   <h4>Students:</h4>
-                  {groupStudents.map((student) => (
-                    <li key={student._id}>
-                      {student.name} {student.surname}, {student.age} y.
-                    </li>
-                  ))}
-                </ul>
+                  <ul>
+                    {group.students.map((student) => (
+                        <li key={student._id}>
+                          {student.name} {student.surname}, {student.age} y.
+                        </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : (
+                <p>No students in this group.</p>
               )}
             </li>
           ))}
         </ul>
-      </div>
+      </section>
 
-      <div>
+      <section>
         <h2>Programming Languages:</h2>
 
         <ul>
@@ -284,9 +222,9 @@ function App() {
             </li>
           ))}
         </ul>
-      </div>
+      </section>
 
-      <div>
+      <section>
         <h2>Lecturers:</h2>
 
         <ul>
@@ -324,9 +262,9 @@ function App() {
             </li>
           ))}
         </ul>
-      </div>
+      </section>
 
-      <div>
+      <section>
         <h2>Subjects:</h2>
         <ul>
           {subjects.map(subject => (
@@ -336,17 +274,20 @@ function App() {
               </a>
               <p>Programming Languages:</p>
               <ul>
-                {subject.programmingLanguages.map((language) => (
-                  <li key={language._id}>
-                    {language.name}
-                  </li>
-                ))}
+                {subject.proglangs.length > 0 ? (
+                  subject.proglangs.map((proglang) => (
+                    <li key={proglang._id}>
+                      {proglang.name}
+                    </li>
+                  ))
+                ) : (
+                  <li>No programming languages assigned.</li>
+                )}
               </ul>
-
             </li>
           ))}
         </ul>
-      </div>
+      </section>
 
     </>
   )
