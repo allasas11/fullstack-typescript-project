@@ -1,49 +1,7 @@
 import { useEffect, useState } from "react"
 import { API_URL } from "./utils/config"
-import { BarLoader } from "react-spinners";
-
-
-interface Student {
-  _id: string;
-  name: string
-  surname: string
-  age: number
-  interests: ProgrammingLanguage[]
-  groupId?: Group
-}
-
-
-interface Group {
-  _id: string
-  name: string
-  description: string
-  students: Student[]
-}
-
-
-interface ProgrammingLanguage {
-  _id: string
-  name: string
-  description: string
-  students: Student[]
-}
-
-interface Lecturer {
-  _id: string
-  name: string
-  surname: string
-  age: number
-  subjects: Subject[]
-  groups: Group[]
-}
-
-
-interface Subject {
-  _id: string
-  name: string
-  description: string
-  proglangs: ProgrammingLanguage[]
-}
+import { BarLoader } from "react-spinners"
+import { Student, Group, ProgrammingLanguage, Lecturer, Subject } from "./types"
 
 
 function HomePage() {
@@ -122,7 +80,7 @@ function HomePage() {
         <div style={{ textAlign: "center", marginTop: "50px" }}>
           <BarLoader color="#646cff" loading={true} />
         </div>
-      );
+      )
     }
   
     if (error) {

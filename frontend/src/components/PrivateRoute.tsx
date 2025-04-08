@@ -1,9 +1,9 @@
-
-import { Navigate } from "react-router"
+import { Navigate, Outlet } from "react-router"
 import { useAuth } from "../AuthContext"
 import { BarLoader } from "react-spinners"
 
-const ProfilePage: React.FC = () => {
+
+const PrivateRoute: React.FC = () => {
     const { user, loading, logoutUser } = useAuth()
 
     if (loading) {
@@ -14,7 +14,7 @@ const ProfilePage: React.FC = () => {
         )
       }
 
-    if (!user) {
+    if(!user) {
         return <Navigate to={'/login'} />
     }
 
@@ -24,13 +24,10 @@ const ProfilePage: React.FC = () => {
         logoutUser()
         return <Navigate to={'/login'} />
     }
- 
+
     return (
-        <div>
-            <h1>Profile Page</h1>
-            <p>Username: {user.username}</p>
-            <p>Email: {user.email}</p>
-        </div>
+        <Outlet />
     )
 }
-export default ProfilePage
+
+export default PrivateRoute

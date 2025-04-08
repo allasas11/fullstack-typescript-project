@@ -2,8 +2,10 @@ import axios from "axios"
 import { useState } from "react"
 import { API_URL } from "../utils/config"
 import { useNavigate } from "react-router"
+import { useAuth } from "../AuthContext"
 
 const LoginPage: React.FC = () => {
+    const { loginUser } = useAuth()
     const [ email, setEmail ] = useState('')
     const [ password, setPassword ] = useState('')
 
@@ -21,7 +23,7 @@ const LoginPage: React.FC = () => {
             const { token } = res.data
 
             if (token) {
-                localStorage.setItem('token', token)
+                loginUser(token)
                 navigate('/profile')
             }
     
