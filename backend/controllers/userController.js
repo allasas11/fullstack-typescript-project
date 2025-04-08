@@ -68,6 +68,9 @@ const login = async (req, res) => {
                 password: user.password
             },
             process.env.JWT_SECRET,
+            {
+                expiresIn: '1h'
+            }
         )
 
         console.log(token)

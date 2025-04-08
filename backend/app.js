@@ -36,8 +36,6 @@ const proglangsRouter = require('./routes/proglangs')
 const lecturersRouter = require('./routes/lecturers')
 const subjectsRouter = require('./routes/subjects')
 
-
-
 // API routes //
 
 app.use('/api/students', studentApiRoutes)
