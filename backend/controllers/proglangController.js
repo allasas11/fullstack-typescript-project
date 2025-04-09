@@ -1,9 +1,18 @@
+const mongoose = require('mongoose')
 const Proglang = require('../models/proglangModel')
 
 const getProglangs = async (req, res) => {
   try {
-    const proglangs = await Proglang.find()
-      .populate('students')
+    const proglangs = await Proglang.aggregate([
+      {
+        $lookup: {
+          from: 'students',
+          localField: '_id', 
+          foreignField: 'interests', 
+          as: 'students', 
+        }
+      }
+    ])
     res.send(proglangs)
   } catch (error) {
     res.status(500).send(error)
@@ -13,15 +22,33 @@ const getProglangs = async (req, res) => {
 const getProglangById = async (req, res) => {
   try {
     const { id } = req.params
-    const proglang = await Proglang.findById(id)
-      .populate('students')
 
-    if (!proglang) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).send({ error: 'Invalid programming language ID' })
+    }
+
+
+    const proglang = await Proglang.aggregate([
+      {
+        $match: { _id: new mongoose.Types.ObjectId(id) }
+      },
+      {
+        $lookup: {
+          from: 'students',
+          localField: '_id', 
+          foreignField: 'interests', 
+          as: 'students', 
+        }
+      }
+    ])
+
+    if (proglang.length === 0) {
       return res.status(404).send({ error: 'Programming language not found' })
     }
 
-    res.send(proglang)
+    res.send(proglang[0])
   } catch (error) {
+    console.error(error)
     res.status(500).send(error)
   }
 }
