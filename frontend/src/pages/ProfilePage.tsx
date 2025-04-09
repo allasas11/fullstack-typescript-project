@@ -8,7 +8,7 @@ const ProfilePage: React.FC = () => {
 
     if (loading) {
         return (
-          <div style={{ textAlign: "center", marginTop: "50px" }}>
+          <div style={{ textAlign: "center", margin: "50px" }}>
             <BarLoader color="#646cff" loading={true} />
           </div>
         )
@@ -18,7 +18,7 @@ const ProfilePage: React.FC = () => {
         return <Navigate to={'/login'} />
     }
 
-    const isExpired = user.exp * 1000 < Date.now()
+    const isExpired = user.exp * 1000 > Date.now()
 
     if(!isExpired) {
         logoutUser()
