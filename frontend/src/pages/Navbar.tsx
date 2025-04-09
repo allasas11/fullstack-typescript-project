@@ -20,6 +20,31 @@ function Navbar() {
           <NavLink to="/main">Main</NavLink>
         </li>
 
+        <li>
+          <NavLink to="/profile">Profile</NavLink>
+        </li>
+
+        <li>
+          <NavLink to="/students">Students</NavLink>
+        </li>
+
+        <li>
+          <NavLink to="/groups">Groups</NavLink>
+        </li>
+
+        <li>
+          <NavLink to="/lecturers">Lecturers</NavLink>
+        </li>
+
+        <li>
+          <NavLink to="/proglangs">Programming Languages</NavLink>
+        </li>
+
+        <li>
+          <NavLink to="/subjects">Subjects</NavLink>
+        </li>
+
+        
         {user && (
           <>
 
@@ -33,14 +58,6 @@ function Navbar() {
 
           </>
         )}
-
-        <li>
-          <NavLink to="/profile">Profile</NavLink>
-        </li>
-
-        <li>
-          <NavLink to="/groups">Groups</NavLink>
-        </li>
 
         {user ? (
           <li>

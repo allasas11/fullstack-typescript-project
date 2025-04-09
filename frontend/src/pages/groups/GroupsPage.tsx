@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react"
 import { BarLoader } from "react-spinners"
 import { Link } from "react-router"
-import api from "../api"
+import api from "../../api"
+import { Group } from "../../types"
 
-
-interface Group {
-    _id: string
-    name: string
-}
 
 const GroupsPage: React.FC = () => {
     const [groups, setGroups] = useState<Group[]>([])

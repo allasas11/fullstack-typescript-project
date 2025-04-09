@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react"
 import { BarLoader } from "react-spinners"
 import { useParams } from "react-router"
-import api from "../api"
+import api from "../../api"
 
-import { Group } from "../types"
+import { Group } from "../../types"
 
 const GroupPage: React.FC = () => {
 
