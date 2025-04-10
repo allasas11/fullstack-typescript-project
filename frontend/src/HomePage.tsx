@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { API_URL } from "./utils/config"
 import { BarLoader } from "react-spinners"
-import { Student, Group, ProgrammingLanguage, Lecturer, Subject } from "./types"
+import { Student, Group, ProgrammingLanguage, Lecturer, Subject } from "./types/types"
 
 
 function HomePage() {

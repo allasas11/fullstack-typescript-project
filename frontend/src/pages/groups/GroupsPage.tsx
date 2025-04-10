@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { BarLoader } from "react-spinners"
 import { Link } from "react-router"
 import api from "../../api"
-import { Group } from "../../types"
+import { Group } from "../../types/types"
 
 
 const GroupsPage: React.FC = () => {

@@ -1,6 +1,6 @@
 
 import { Navigate } from "react-router"
-import { useAuth } from "../AuthContext"
+import { useAuth } from "../../AuthContext"
 import { BarLoader } from "react-spinners"
 
 const ProfilePage: React.FC = () => {

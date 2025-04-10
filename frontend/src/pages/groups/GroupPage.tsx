@@ -3,7 +3,7 @@ import { BarLoader } from "react-spinners"
 import { useParams } from "react-router"
 import api from "../../api"
 
-import { Group } from "../../types"
+import { Group } from "../../types/types"
 
 const GroupPage: React.FC = () => {
 

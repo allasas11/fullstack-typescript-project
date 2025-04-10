@@ -3,7 +3,7 @@ import { BarLoader } from "react-spinners"
 import api from "../../api";
 import { Link } from "react-router"
 
-import { Lecturer } from "../../types"
+import { Lecturer } from "../../types/types"
 
 const LecturersPage: React.FC = () => {
   const [lecturers, setLecturers] = useState<Lecturer[]>([])

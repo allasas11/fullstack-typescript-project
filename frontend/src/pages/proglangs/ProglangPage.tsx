@@ -3,7 +3,7 @@ import { BarLoader } from "react-spinners"
 import { useParams } from "react-router"
 import api from "../../api"
 
-import { ProgrammingLanguage } from "../../types"
+import { ProgrammingLanguage } from "../../types/types"
 
 const ProglangPage: React.FC = () => {
   const [proglang, setProglang] = useState<ProgrammingLanguage | null>(null)

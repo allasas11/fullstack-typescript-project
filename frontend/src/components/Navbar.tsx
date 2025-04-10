@@ -1,5 +1,5 @@
 import { NavLink } from "react-router"
-import LogoutButton from "../components/LogoutButton"
+import LogoutButton from "./LogoutButton"
 import { useAuth } from "../AuthContext"
 
 
@@ -13,36 +13,32 @@ function Navbar() {
       <ul>
 
         <li>
-          <NavLink to="/">Home</NavLink>
+          <NavLink to="/">Main</NavLink>
         </li>
 
-        <li>
-          <NavLink to="/main">Main</NavLink>
-        </li>
+        {user && (
+          <>
+            <li>
+              <NavLink to="/students">Students</NavLink>
+            </li>
 
-        <li>
-          <NavLink to="/profile">Profile</NavLink>
-        </li>
+            <li>
+              <NavLink to="/groups">Groups</NavLink>
+            </li>
 
-        <li>
-          <NavLink to="/students">Students</NavLink>
-        </li>
+            <li>
+              <NavLink to="/lecturers">Lecturers</NavLink>
+            </li>
 
-        <li>
-          <NavLink to="/groups">Groups</NavLink>
-        </li>
+            <li>
+              <NavLink to="/proglangs">Programming Languages</NavLink>
+            </li>
 
-        <li>
-          <NavLink to="/lecturers">Lecturers</NavLink>
-        </li>
-
-        <li>
-          <NavLink to="/proglangs">Programming Languages</NavLink>
-        </li>
-
-        <li>
-          <NavLink to="/subjects">Subjects</NavLink>
-        </li>
+            <li>
+              <NavLink to="/subjects">Subjects</NavLink>
+            </li>
+          </>
+        )}
 
         
         {user && (
@@ -54,6 +50,10 @@ function Navbar() {
 
             <li>
               <NavLink to="/dashboard/settings">Settings</NavLink>
+            </li>
+
+            <li>
+              <NavLink to="/dashboard/profile">Profile</NavLink>
             </li>
 
           </>

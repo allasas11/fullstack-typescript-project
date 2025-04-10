@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useState } from "react"
-import { API_URL } from "../utils/config"
+import { API_URL } from "../../utils/config"
 import { useNavigate } from "react-router"
 
 const RegisterPage: React.FC = () => {

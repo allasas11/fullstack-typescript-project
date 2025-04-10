@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BarLoader } from "react-spinners";
 
-import { ProgrammingLanguage } from "../../types"
+import { ProgrammingLanguage } from "../../types/types"
 import api from "../../api";
 import { Link } from "react-router";
 

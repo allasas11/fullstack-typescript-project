@@ -3,7 +3,7 @@ import { BarLoader } from "react-spinners"
 import api from "../../api"
 import { Link } from "react-router"
 
-import { Student } from "../../types"
+import { Student } from "../../types/types"
 
 const StudentsPage: React.FC = () => {
   const [students, setStudents] = useState<Student[]>([])

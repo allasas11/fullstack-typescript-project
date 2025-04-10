@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { useParams } from "react-router"
 import { BarLoader } from "react-spinners"
 
-import { Student } from "../../types"
+import { Student } from "../../types/types"
 import api from "../../api"
 
 

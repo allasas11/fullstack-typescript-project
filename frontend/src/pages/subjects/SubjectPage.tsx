@@ -3,7 +3,7 @@ import { BarLoader } from "react-spinners"
 import { useParams } from "react-router"
 import api from "../../api"
 
-import { Subject } from "../../types"
+import { Subject } from "../../types/types"
 
 const SubjectPage: React.FC = () => {
   const [subject, setSubject] = useState<Subject | null>(null)

@@ -4,7 +4,7 @@ import { BarLoader } from "react-spinners"
 import api from "../../api"
 import { Link } from "react-router"
 
-import { Subject } from "../../types"
+import { Subject } from "../../types/types"
 
 const SubjectsPage: React.FC = () => {
   const [subjects, setSubjects] = useState<Subject[]>([])
