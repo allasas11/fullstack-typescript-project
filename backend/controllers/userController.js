@@ -65,7 +65,6 @@ const login = async (req, res) => {
                 id: user._id, 
                 username: user.username,
                 email: user.email,
-                password: user.password
             },
             process.env.JWT_SECRET,
             {
@@ -84,7 +83,32 @@ const login = async (req, res) => {
     } 
 }
 
+const updateUser = async (req, res) => {
+    const { username } = req.body
+    const { id } = req.user
+
+    if(!username) {
+        return res.status(400).send({message: 'Username is required'})
+    }
+
+    try {
+        const updateUser = await User.findByIdAndUpdate(
+            id,
+            { username },
+            { new: true }
+        )
+
+        if (!updateUser) {
+            return res.status(404).send({message: 'User does not exist'})
+        }
+
+        res.send({message: 'User succesfully updated', user: { username }})
+    } catch (error) {
+        res.status(500).send(error)
+    }
+}
 module.exports = {
     register,
-    login
+    login,
+    updateUser
 }
