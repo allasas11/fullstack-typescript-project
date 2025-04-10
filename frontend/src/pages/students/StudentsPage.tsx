@@ -43,6 +43,13 @@ const StudentsPage: React.FC = () => {
   return (
     <div>
       <h1>Students Page</h1>
+
+      <div>
+        <Link to="/students/create">
+          <button>Create Student</button>
+        </Link>
+      </div>
+
       <ul>
         {students.map((student) => (
           <li key={student._id}>

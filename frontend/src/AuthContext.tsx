@@ -7,7 +7,6 @@ interface DecodedToken {
     id: string 
     username: string 
     email: string 
-    password: string 
 }
 
 interface AuthContextType {
@@ -15,9 +14,16 @@ interface AuthContextType {
     loading: boolean
     loginUser: (token: string) => void
     logoutUser: () => void
+    updateUser: (newUser: Partial<DecodedToken>) => void
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined)
+const AuthContext = createContext<AuthContextType>({
+    user: null,
+    loading: true,
+    loginUser: () => {},
+    logoutUser: () => {},
+    updateUser: () => {},
+})
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<DecodedToken | null>(null)
@@ -50,14 +56,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const logoutUser = () => {
         localStorage.removeItem('token')
         setUser(null)
+    }
 
+    const updateUser = (newUser: Partial<DecodedToken>) => {
+        setUser(prevState => {
+            if (!prevState) return null
+            return {
+                ...prevState,
+                ...newUser
+            }
+        })
     }
 
     const contextValue: AuthContextType = {
         user,
         loading,
         loginUser,
-        logoutUser
+        logoutUser,
+        updateUser
     }
 
     return (

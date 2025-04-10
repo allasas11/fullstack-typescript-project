@@ -19,6 +19,8 @@ import ProglangsPage from "./pages/proglangs/ProglangsPage";
 import ProglangPage from "./pages/proglangs/ProglangPage";
 import SubjectsPage from "./pages/subjects/SubjectsPage";
 import SubjectPage from "./pages/subjects/SubjectPage";
+import StudentCreatePage from "./pages/students/StudentCreatePage";
+import StudentEditPage from "./pages/students/StudentEditPage";
 
 function App() {
 
@@ -47,8 +49,8 @@ function App() {
           <Route path='students'>
             <Route index element={<StudentsPage />} />
             <Route path=':id' element={<StudentPage />} />
-            {/* <Route path="create" element={<StudentCreatePage />} />
-            <Route path="edit/:id" element={<StudentEditPage />} /> */}
+            <Route path="create" element={<StudentCreatePage />} />
+            <Route path="edit/:id" element={<StudentEditPage />} />
           </Route>
 
           <Route path='lecturers'>

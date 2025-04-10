@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { useParams } from "react-router"
+import { useNavigate, useParams } from "react-router"
 import { BarLoader } from "react-spinners"
 
 import { Student } from "../../types/types"
@@ -12,6 +12,7 @@ const StudentPage: React.FC = () => {
   const [error, setError] = useState<Error | null>(null)
 
   const { id } = useParams<{ id: string }>()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchStudent = async () => {
@@ -26,6 +27,19 @@ const StudentPage: React.FC = () => {
     }
     fetchStudent()
   }, [id])
+
+  const handleDelete = async () => {
+    if (!window.confirm("Are you sure you want to delete this student?")) {
+      return
+    }
+
+    try {
+      await api.delete(`/students/${id}`)
+      navigate("/students")
+    } catch (error) {
+      console.error("Error deleting student:", error)
+    }
+  }
 
   if (loading) {
     return (
@@ -46,27 +60,33 @@ const StudentPage: React.FC = () => {
   return (
     <div>
       <h1>Student Page</h1>
-        <p><strong>Name:</strong> {student.name} {student.surname}</p>
-        <p><strong>Age:</strong> {student.age}</p>
 
-        <p>
-            Group: <em>{student.groupId?.name || "No group assigned"}</em>
-        </p>
+      <p><strong>Name:</strong> {student.name} {student.surname}</p>
+      <p><strong>Age:</strong> {student.age}</p>
 
-        {student.interests.length > 0 ? (
-        <div>
-            <p>Interests:</p>
-            <ul>
-            {student.interests.map((language) => (
-                <li key={language._id}>
-                {language.name}
-                </li>
-            ))}
-            </ul>
-        </div>
-        ) : (
-        <p>No programming language interests.</p>
-        )}
+      <p>
+          Group: <em>{student.groupId?.name || "No group assigned"}</em>
+      </p>
+
+      {student.interests.length > 0 ? (
+      <div>
+          <p>Interests:</p>
+          <ul>
+          {student.interests.map((language) => (
+              <li key={language._id}>
+              {language.name}
+              </li>
+          ))}
+          </ul>
+      </div>
+      ) : (
+      <p>No programming language interests.</p>
+      )}
+
+      <div>
+        <button onClick={() => navigate(`/students/edit/${id}`)}>Edit</button>
+        <button onClick={handleDelete} >Delete</button>
+      </div>
     </div>
   )
 }
