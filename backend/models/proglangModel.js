@@ -15,10 +15,6 @@ const proglangSchema = new mongoose.Schema({
       trim: true,
       minlength: 10,
   },
-  students: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Student'
-  }]
 }, { timestamps: true })
 
   const Proglang = mongoose.model('Proglang', proglangSchema)
