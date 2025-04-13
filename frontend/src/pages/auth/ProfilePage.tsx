@@ -51,6 +51,7 @@ const ProfilePage: React.FC = () => {
             <h1>Profile Page</h1>
             <p>Username: {user.username}</p>
             <p>Email: {user.email}</p>
+            <p>Role: {user.role}</p>
 
             <form onSubmit={submitHandler}>
               <div className="formControl">

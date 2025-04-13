@@ -21,6 +21,7 @@ import SubjectsPage from "./pages/subjects/SubjectsPage";
 import SubjectPage from "./pages/subjects/SubjectPage";
 import StudentCreatePage from "./pages/students/StudentCreatePage";
 import StudentEditPage from "./pages/students/StudentEditPage";
+import AdminDashboardPage from "./pages/dashboard/AdminDashboardPage";
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
             <Route index element={<DashboardPage />}/>
             <Route path='settings' element={<SettingsPage />}/>
             <Route path='profile' element={<ProfilePage />} />
+            <Route path='admin' element={<AdminDashboardPage />} />
           </Route>
 
           <Route path='groups'>

@@ -1,6 +1,7 @@
 import { NavLink } from "react-router"
 import LogoutButton from "./LogoutButton"
 import { useAuth } from "../AuthContext"
+import ROLES from "../config/roles"
 
 
 function Navbar() {
@@ -22,9 +23,11 @@ function Navbar() {
               <NavLink to="/students">Students</NavLink>
             </li>
 
-            <li>
-              <NavLink to="/groups">Groups</NavLink>
-            </li>
+            {user?.role === ROLES.ADMIN && (
+              <li>
+                <NavLink to="/groups">Groups</NavLink>
+              </li>
+            )}
 
             <li>
               <NavLink to="/lecturers">Lecturers</NavLink>
@@ -47,6 +50,12 @@ function Navbar() {
             <li>
               <NavLink to="/dashboard">Dashboard</NavLink>
             </li>
+
+            {user?.role === ROLES.ADMIN && (
+              <li>
+                <NavLink to="/dashboard/admin">Admin Dashboard</NavLink>
+              </li>
+            )}
 
             <li>
               <NavLink to="/dashboard/settings">Settings</NavLink>

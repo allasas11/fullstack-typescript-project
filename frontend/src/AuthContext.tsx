@@ -6,7 +6,8 @@ interface DecodedToken {
     exp: number 
     id: string 
     username: string 
-    email: string 
+    email: string
+    role: string 
 }
 
 interface AuthContextType {
@@ -27,6 +28,8 @@ const AuthContext = createContext<AuthContextType>({
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<DecodedToken | null>(null)
+    console.log("🚀 ~ AuthProvider ~ user:", user)
+    
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
