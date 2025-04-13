@@ -35,11 +35,14 @@ const groupsRoutes = require('./routes/groups')
 const proglangsRouter = require('./routes/proglangs')
 const lecturersRouter = require('./routes/lecturers')
 const subjectsRouter = require('./routes/subjects')
+const authMiddleWare = require('./middlewares/authMiddleware')
+const rolesMiddleware = require('./middlewares/rolesMiddleware')
+const ROLES = require('./config/roles')
 
 // API routes //
 
 app.use('/api/students', studentApiRoutes)
-app.use('/api/groups', groupsApiRoutes)
+app.use('/api/groups', authMiddleWare, rolesMiddleware(ROLES.ADMIN), groupsApiRoutes)
 app.use('/api/proglangs', proglangsApiRoutes)
 app.use('/api/lecturers', lecturersApiRoutes)
 app.use('/api/subjects', subjectsApiRoutes)
